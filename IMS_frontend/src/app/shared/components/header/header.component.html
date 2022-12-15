@@ -1,0 +1,18 @@
+<nz-header>
+  <div class="columns-2">
+    <span
+      class="trigger"
+      nz-icon
+      [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+      (click)="changeView()"
+    ></span>
+    <div class=" w-full flex justify-end">
+      <div class="w-14 text-center">
+        <span class="text-3xl align-middle " nz-icon nzType="global" nzTheme="outline"></span>
+      </div>
+      <div class="w-14 border-l-2 text-center">
+        <span class="text-3xl align-middle " nz-icon nzType="user" nzTheme="outline"></span>
+      </div>
+      </div>
+    </div>
+</nz-header>

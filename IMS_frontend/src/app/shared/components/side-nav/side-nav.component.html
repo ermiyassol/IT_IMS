@@ -1,0 +1,29 @@
+<!-- <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null"> -->
+  <div class="logo"> 
+    <img src="../../../../assets/images/branding logo.png" alt="">
+  </div>
+  <ul nz-menu nzTheme="dark" nzMode="inline">
+    <li nz-menu-item routerLink="dashboard" routerLinkActive="ant-menu-item-selected">
+      <span nz-icon nzType="dashboard"></span>
+      <span>Dashboard</span>
+    </li>
+
+    <li  nz-submenu nzTitle="Device" nzIcon="desktop">
+      <ul class="sub-menu">
+        <li nz-menu-item routerLink="device/view" routerLinkActive="ant-menu-item-selected">View</li>
+        <li nz-menu-item routerLink="device/add" routerLinkActive="ant-menu-item-selected">Add New</li>
+        <!-- <li nz-menu-item>Alex</li> -->
+      </ul>
+    </li>
+    <!-- <li nz-submenu nzTitle="Team" nzIcon="team">
+      <ul>
+        <li nz-menu-item>Team 1</li>
+        <li nz-menu-item>Team 2</li>
+      </ul>
+    </li> -->
+    <!-- <li nz-menu-item>
+      <span nz-icon nzType="file"></span>
+      <span>File</span>
+    </li> -->
+  </ul>
+<!-- </nz-sider> -->

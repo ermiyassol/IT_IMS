@@ -1,0 +1,21 @@
+<nz-layout>
+  <!-- side nav here -->
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <app-side-nav></app-side-nav>
+</nz-sider>
+  <nz-layout>
+    <!-- header -->
+
+      <app-header></app-header>
+
+    <nz-content class="overflow-y-auto h-full">
+      <nz-breadcrumb class="flex justify-center">
+        <h3>IT SUPPORT TEAM INVENTORY MANAGEMENT SYSTEM</h3>
+      </nz-breadcrumb>
+      <div class="inner-content"><router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <!-- footer -->
+    <app-footer></app-footer>
+  </nz-layout>
+</nz-layout>

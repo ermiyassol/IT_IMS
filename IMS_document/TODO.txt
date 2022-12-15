@@ -1,0 +1,75 @@
+Backend
+Frontend
+ - Option visibility setting
+    * new only on add device
+    * returned only for under maintenance and issued device
+    * under maintenance only for damaged device
+- send history for every change
+
+design
+employmentStatus - staff | contractor
+company - for staff - Safaricom Ethiopia | Safaricom Keneya | Vodacom
+        - for contractors - Gebeya | Excellerent | Nokia | Ison | Huawei |
+city - Addis Ababa | Hawassa | Adama | Gonder
+
+//? is my model works for 1 employee took more than one device
+
+tomorrow todo
+- link with back end.
+- finalize add and view fulfill functionality.
+- add serial number shortening functionality to the adding functionality.
+- create interactive UI for the update and finish update frontend functionality.
+- make id number optional
+- when edit details don't show sub details
+
+remaining
+- create API and UI for CRUD => (city, brand, model, )
+- AD integration
+- create UI for login
+- place guards on routing (Essential Functionality)
+- use interceptor for requests (Essential Functionality)
+- 
+
+
+for monday
+- write function code device status change
+- check serial number & asset tag checkup 
+
+
+
+
+status change scenario
+issue - 
+        - main field update
+        - new employee data inserted
+        - new history data will be added
+
+return from employee -
+        - main field update
+        - delete employee data
+        - new history data will be added
+
+return from maintenance
+        - main field update
+        - new history data will be added
+
+damaged
+        - main field update
+        - new history data will be added
+
+sent for maintenance
+        - main field update
+        - new history data will be added
+
+
+
+
+
+
+feedback
+- po number should be added
+
+todo
+- when issued data are damaged employee info will not be deleted
+- add companyId on employee database and Backend
+- 
