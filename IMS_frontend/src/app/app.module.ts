@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MainModule } from './features/main/main.module';
 import { DeviceModule } from './features/device/device.module';
+import { HomeModule } from './features/home/home.module';
 
 registerLocaleData(en);
 
@@ -27,7 +28,8 @@ registerLocaleData(en);
     AppRoutingModule,
     SharedModule,
     MainModule,
-    DeviceModule
+    DeviceModule,
+    HomeModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

@@ -136,11 +136,11 @@ issueDevice(id: string, devData: Device, empData: any) {
   })
 }
 
-returnDevice(formData: History, devData: Device, deviceId: string) {
+returnDevice(formData: History, devData: Device, deviceId: string, currentStatus: string) {
   return new Promise((resolve, reject) => {
     console.log(formData);
     const empId = this.STORE.getEmployeeId(deviceId);
-    const newHistory = new History(formData.actionDate, "returned", deviceId, formData.description, "Desalegn Sebhatu"); // todo actionBy should be dynamic
+    const newHistory = new History(formData.actionDate, currentStatus, deviceId, formData.description, "Desalegn Sebhatu"); // todo actionBy should be dynamic
     this.updateDevice(devData, deviceId).then(response => {
       this.API.deleteEmployee(empId!).then(response => {
         this.addHistory(newHistory).then(response => {

@@ -22,10 +22,15 @@ app.use(corsHandler);
 //     );
 //     next();
 //   });
-  
+app.use("/api/auth", router.auth)
 app.use("/api/device", router.device)
+app.use("/api/device", router.deviceType)
+app.use("/api/device", router.deviceBrand)
+app.use("/api/device", router.deviceModel)
 app.use("/api/employee", router.employee)
 app.use("/api/history", router.history)
+app.use("/api/company", router.company)
+app.use("/api/city", router.city)
 
 app.listen(8000, (state) => {
     console.log("Server Started Successfully!");

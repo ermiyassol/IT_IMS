@@ -67,7 +67,7 @@ export class SingleFormComponent implements OnInit {
       serialNumber: "",
       assetTagNumber: "",
       model: "",
-      status: "New",
+      status: "new",
     })
     this.models = [];
     this.formSubmitted = false;
@@ -91,6 +91,7 @@ export class SingleFormComponent implements OnInit {
       this.message.display("success", "New device added successfully.")
       // todo reset form
       this.resetMainField();
+      console.log(this.mainForm.value);
       // ! todo  redirect to table page
     }, errorMessage => {
       this.isLoading = false;
@@ -118,8 +119,8 @@ export class SingleFormComponent implements OnInit {
     if(status == "issued") {
       return this.deviceService.issueDevice(this.updatedId, this.mainForm.value, this.issueForm.value);
     } 
-    else if (status == "returned" && this.previousStatus == "issued") {
-      return this.deviceService.returnDevice(this.stateForm.value, this.mainForm.value, this.updatedId)
+    else if (status == "returned" && this.previousStatus == "issued" || status == "damaged" && this.previousStatus == "issued") {
+      return this.deviceService.returnDevice(this.stateForm.value, this.mainForm.value, this.updatedId, status)
     } 
     else {
       return this.deviceService.changeStatus(this.stateForm.value, this.mainForm.value, this.updatedId).then((successMessage: any) => {

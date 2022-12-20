@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { timeInterval } from 'rxjs';
 import { Device } from '../model/device.model';
-import { API } from './api.store';
+import { API } from '../../../shared/services/api.store';
 
 @Injectable({
   providedIn: 'root'

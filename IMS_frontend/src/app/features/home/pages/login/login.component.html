@@ -1,0 +1,76 @@
+<div class="flex">
+  <img class="w-2/5" src="../../../../../assets/images/login image.png" alt="" srcset="">
+  <div class="w-3/5 p-10">
+    <div class="flex justify-center">
+      <img class="w-3/5" src="../../../../../assets/images/branding logo.png" alt="" srcset="">
+    </div>
+    <div class="flex justify-center mt-12" *ngIf="isLoading">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div class="w-full max-w-sm" *ngIf="!isLoading">
+      <div class="">
+        <form class="px-8 pt-6 pb-8 mb-4" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+          <div class="mb-3">
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Please input your username!">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                  Username
+                </label>
+                <input nz-input formControlName="userName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+              </nz-form-control>
+              </nz-form-item>
+          </div>
+          <div class="mb-3">
+            <nz-form-item>
+              <nz-form-control nzErrorTip="Please input your password!">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                  Password
+                </label>
+                <input nz-input formControlName="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
+                </nz-form-control>
+              </nz-form-item>
+            <!-- <p class="text-red-500 text-xs italic">Please choose a password.</p> -->
+          </div>
+          <div class="flex items-center justify-between">
+            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Log In
+            </button>
+            <!-- <a class="inline-block align-baseline font-bold text-sm text-green-500 hover:text-green-800" href="#">
+              Forgot Password?
+            </a> -->
+          </div>
+        </form>
+        
+      </div>
+      <!-- <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please input your username!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="userName" placeholder="Username" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please input your Password!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="Password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <div nz-row class="login-form-margin">
+          <div nz-col [nzSpan]="12">
+            <label nz-checkbox formControlName="remember">
+              <span>Remember me</span>
+            </label>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <a class="login-form-forgot">Forgot password</a>
+          </div>
+        </div>
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
+        Or
+        <a>register now!</a>
+      </form> -->
+    </div>
+  </div>
+</div>

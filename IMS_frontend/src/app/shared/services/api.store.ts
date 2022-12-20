@@ -9,7 +9,11 @@ export class API {
     private DEVICE = "/device"
     private EMPLOYEE = "/employee"
     private HISTORY = "/history"
+    private AUTH = "/auth"
 
+    // AUTH
+    login = `${this.DOMAIN}${this.AUTH}/login`;
+    
     // DEVICE
     countDevice = `${this.DOMAIN}${this.DEVICE}/countDevice`;
     addDevice = `${this.DOMAIN}${this.DEVICE}/addDevice`;

@@ -5,6 +5,7 @@ export class Device {
         public assetTagNumber: string,
         public model: string,
         public status: string,
+        public poId?: string,
         public id?: string,
         public createdAt?: string,
         public updatedAt?: string,

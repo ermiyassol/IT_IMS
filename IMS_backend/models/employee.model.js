@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         // empKey: {type: DataTypes.INTEGER },
         deviceId: {type: DataTypes.INTEGER },
         fullName: {type: DataTypes.STRING },
+        companyId: {type: DataTypes.STRING },
         role: {type: DataTypes.STRING },
         issueDate: {type: DataTypes.STRING },
         remark: {type: DataTypes.STRING },

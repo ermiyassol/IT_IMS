@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         assetTagNumber: {type: DataTypes.STRING },
         model: {type: DataTypes.STRING },
         status: {type: DataTypes.STRING },
+        poId: {type: DataTypes.STRING}
     })
 
     return Device
