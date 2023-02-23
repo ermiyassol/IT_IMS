@@ -14,12 +14,16 @@ import { SharedModule } from './shared/shared.module';
 import { MainModule } from './features/main/main.module';
 import { DeviceModule } from './features/device/device.module';
 import { HomeModule } from './features/home/home.module';
+import { SettingModule } from './features/setting/setting.module';
+import { DashboardModule } from './features/dashboard/dashboard.module';
+import { RecordComponent } from './features/record/record.component';
+import { RecordSearchPipe } from './features/record/record-search.pipe';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, RecordComponent, RecordSearchPipe
   ],
   imports: [
     BrowserModule,
@@ -29,7 +33,9 @@ registerLocaleData(en);
     SharedModule,
     MainModule,
     DeviceModule,
-    HomeModule
+    HomeModule,
+    SettingModule,
+    DashboardModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US }

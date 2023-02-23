@@ -1,0 +1,36 @@
+<div class="w-full space-y-5">
+  <div class="flex w-full border bg-gray-100 pb-7">
+    <div class="w-3/5 border bg-gray-100 pb-7">
+      <nz-empty *ngIf="stockDevices.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-advanced-pie-chart *ngIf="stockDevices.length > 0" [heading]="'Stock Devices'" [value]="stockDevices"></app-advanced-pie-chart>
+    </div>
+    <div class="w-2/5 border bg-gray-100 pb-7">
+      <nz-empty *ngIf="accessories.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-advanced-pie-chart *ngIf="accessories.length > 0" [heading]="'Stock Accessories'" [value]="accessories"></app-advanced-pie-chart>
+    </div>
+  </div> 
+  <div class="flex w-full space-x-5 ">
+    <div class="w-1/2 border bg-gray-100">
+      <h2 class="chart-title">Weekly Device Status Change</h2>
+      <nz-empty *ngIf="weeklyProgress.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-line-chart *ngIf="weeklyProgress.length > 0" [heading]="'Weekly Device Status Change'" [value]="weeklyProgress"></app-line-chart>
+    </div>
+    <div class="w-1/2 border bg-gray-100">
+      <h2 class="chart-title">Change Logs</h2>
+      <nz-empty *ngIf="changeLogs.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-table *ngIf="changeLogs.length > 0" [header]="['Date', 'Changed Status', 'description', 'action by']" [heading]="'Change Logs'" [value]="changeLogs"></app-table>
+    </div>
+  </div>
+  <div class="w-full border bg-gray-100 pb-7">
+    <h2 class="chart-title">Device Received By Purchase Order</h2>
+    <nz-empty *ngIf="purchaseOrdersDetail.length == 0" nzNotFoundImage="simple"></nz-empty>
+    <app-table *ngIf="purchaseOrdersDetail.length > 0" [header]="deviceTypes" [heading]="'Device Received By Purchase Order'" [value]="purchaseOrdersDetail"></app-table>
+  </div>
+</div>
+<!-- <p>aa</p> -->
+
+    <!-- <app-pie-chart></app-pie-chart> -->
+    <!-- <app-column-chart></app-column-chart> -->
+    <!-- <app-advanced-pie-chart></app-advanced-pie-chart> -->
+    <!-- <app-grouped-column-chart></app-grouped-column-chart> -->
+    <!-- <app-line-chart></app-line-chart> -->

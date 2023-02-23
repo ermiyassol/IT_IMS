@@ -12,7 +12,9 @@ export class SearchPipe implements PipeTransform {
     const searchKey = args.toLowerCase();
 
     return value.filter((device: any) => {
-      if(device.brand.includes(searchKey) || 
+      if(device.poId.includes(searchKey) || 
+      device.deviceType.includes(searchKey) || 
+      device.brand.includes(searchKey) || 
       device.serialNumber.includes(searchKey) || 
       device.assetTagNumber.includes(searchKey) || 
       device.model.includes(searchKey) || 

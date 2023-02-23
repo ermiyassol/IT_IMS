@@ -1,6 +1,30 @@
 const db = require("../config/db.config");
-
+const path = require('path');
 const Device = db.device;
+
+exports.bulkAddDevice = async(req, res) => {
+    const response = [];
+    for (const data of req.body) {
+        let newDeviceInfo = {
+            poId: data.poId.toLowerCase(),
+            deviceType: data.deviceType.toLowerCase(),
+            brand: data.brand.toLowerCase(),
+            serialNumber: data.serialNumber.toLowerCase(),
+            assetTagNumber: data.assetTagNumber.toLowerCase(),
+            model: data.model.toLowerCase(),
+            status: data.status.toLowerCase(),
+        }
+        const newDevice = await Device.create(newDeviceInfo);
+        response.push(newDevice);
+      }
+      res.status(200).json(response);
+}
+
+exports.downloadBulkTemplate = async(req, res) => {
+    const file = path.resolve(__dirname, `../data/IT_IMS_device_bulk_template.csv`);
+    //No need for special headers
+    res.download(file); 
+}
 
 exports.countDevice = async(req, res) => {
     const count = await Device.count();
@@ -9,6 +33,8 @@ exports.countDevice = async(req, res) => {
 
 exports.addDevice = async(req, res) => {
     let newDeviceInfo = {
+        poId: req.body.poId.toLowerCase(),
+        deviceType: req.body.deviceType.toLowerCase(),
         brand: req.body.brand.toLowerCase(),
         serialNumber: req.body.serialNumber.toLowerCase(),
         assetTagNumber: req.body.assetTagNumber.toLowerCase(),
@@ -46,6 +72,7 @@ exports.updateDevice = async(req, res) => {
 
 exports.deleteDevice = async(req, res) => {
     const id = req.params.id;
+    
     const deleteStatus = await Device.destroy({ where: {id: id}});
     res.status(200).json({
         status: deleteStatus,

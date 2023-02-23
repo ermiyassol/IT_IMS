@@ -1,4 +1,4 @@
-<nz-layout>
+<nz-layout class="h-full">
   <!-- side nav here -->
   <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
   <app-side-nav></app-side-nav>
@@ -6,13 +6,17 @@
   <nz-layout>
     <!-- header -->
 
-      <app-header></app-header>
+      <app-header [user]="user" (logoutListener)="logout()"></app-header>
 
-    <nz-content class="overflow-y-auto h-full">
+    <nz-content class="h-full">
       <nz-breadcrumb class="flex justify-center">
-        <h3>IT SUPPORT TEAM INVENTORY MANAGEMENT SYSTEM</h3>
+        <h3>IT INVENTORY MANAGEMENT SYSTEM</h3>
       </nz-breadcrumb>
-      <div class="inner-content"><router-outlet></router-outlet>
+      <div class="inner-content">
+        <div *ngIf="isLoading" class="w-full my-10 flex justify-center">
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+        <router-outlet *ngIf="!isLoading"></router-outlet>
       </div>
     </nz-content>
     <!-- footer -->

@@ -1,0 +1,70 @@
+<div class="w-full space-y-5">
+  <div class="w-full border bg-gray-100 pb-7">
+    <nz-empty *ngIf="deviceStatus.length == 0" nzNotFoundImage="simple"></nz-empty>
+    <app-advanced-pie-chart *ngIf="deviceStatus.length > 0" [heading]="heading + ' Stat Per Status'" [value]="deviceStatus"></app-advanced-pie-chart>
+  </div>
+  <div class="flex w-full space-x-5 ">
+    <div class="w-1/3 border bg-gray-100">
+      <h2 class="chart-title">Brands</h2>
+      <nz-empty *ngIf="deviceBrands.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-pie-chart *ngIf="deviceBrands.length > 0" [value]="deviceBrands" class="-mt-5"></app-pie-chart>
+    </div>
+    <div class="w-1/3 border bg-gray-100">
+      <h2 class="chart-title">Models</h2>
+      <nz-form-item class="w-full px-3" *ngIf="deviceModels.length > 0">
+        <nz-form-control >
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="role">
+          </label>
+          <div class="relative">
+            <nz-select [(ngModel)]="selectedBrandId" nzPlaceHolder="Select Brand" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700  pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" (ngModelChange)="brandChanged()" id="brand">
+              <nz-option *ngFor="let brand of listOfBrands" [nzLabel]="brand.brandName | capitalize" [nzValue]="brand.brandId"></nz-option>
+            </nz-select>
+            <!-- <select [ngClass]="{'border-red-600': !mainForm.controls['description'].valid && formSubmitted}" formControlName="description" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="description"> -->
+              <!-- <option label="--Select Description--" value=""></option> -->
+              <!-- <option *ngFor="let description of descriptions" [label]="description.label | capitalize" [value]="description.value"></option> -->
+            <!-- </select> -->
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+          <!-- <p *ngIf="!mainForm.controls['brand'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+        </nz-form-control>
+      </nz-form-item>
+      <nz-empty *ngIf="deviceModels.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-pie-chart *ngIf="deviceModels.length > 0" [value]="deviceModels"></app-pie-chart>
+    </div>
+    <div class="w-1/2 border bg-gray-100">
+      <h2 class="chart-title">Change Logs</h2>
+      <nz-empty nzNotFoundImage="simple"></nz-empty>
+      <!-- <app-column-chart></app-column-chart> -->
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="w-full border bg-gray-100 pb-7">
+    <nz-empty *ngIf="employeeCompany.length == 0" nzNotFoundImage="simple"></nz-empty>
+    <app-advanced-pie-chart *ngIf="employeeCompany.length > 0" [heading]="heading + ' Stat Per Employee Company'" [value]="employeeCompany"></app-advanced-pie-chart>
+  </div>
+  <div class="flex w-full space-x-5 ">
+    <div class="w-2/3 border bg-gray-100">
+      <h2 class="chart-title">City</h2>
+      <nz-empty *ngIf="employeeCity.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-column-chart *ngIf="employeeCity.length > 0" [heading]="heading + ' Stat Per City'" [value]="employeeCity"></app-column-chart>
+    </div>
+    <div class="w-1/3 border bg-gray-100">
+      <h2 class="chart-title">Desktop Received By Purchase Order</h2>
+      <nz-empty *ngIf="devicesPO.length == 0" nzNotFoundImage="simple"></nz-empty>
+      <app-table *ngIf="devicesPO.length > 0" [header]="['Purchase Order', 'Received At', 'Device Quantity']" [heading]="heading + ' Purchase Order Detail'" [value]="devicesPO"></app-table>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="w-full border bg-gray-100 pb-7">
+  <h2 class="chart-title">Device Received By Purchase Order</h2>
+  <app-table></app-table>
+</div> -->
+
+<!-- <div class="w-1/2 border bg-gray-100">
+  <h2 class="chart-title">Change Logs</h2>
+  <app-table></app-table>
+</div> -->

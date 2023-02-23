@@ -13,7 +13,7 @@ exports.updateCity = async(req, res) => {
 }
 
 exports.fetchAllCity = async(req, res) => {
-    fs.readFile("data/device_type.json", (err, data) => {       
+    fs.readFile("data/city.json", (err, data) => {       
         if (err) throw err;
 
         const response = JSON.parse(data.toString('utf8'));

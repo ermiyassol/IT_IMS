@@ -36,6 +36,7 @@ db.purchase = require("../models/purchase.model.js")(sequelize, DataTypes);
 db.accessory = require("../models/accessory.model.js")(sequelize, DataTypes);
 db.company = require("../models/company.model.js")(sequelize, DataTypes);
 db.account = require("../models/account.model.js")(sequelize, DataTypes);
+db.record = require("../models/record.model.js")(sequelize, DataTypes);
 
 db.sequelize.sync({force: false}).then(() => {
     console.log("Yes re-sync done!");

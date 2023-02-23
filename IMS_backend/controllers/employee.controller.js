@@ -1,4 +1,5 @@
 const db = require("../config/db.config");
+const { issueAccessory, returnAccessory } = require("./accessory.controller");
 
 const Employee = db.employee;
 
@@ -10,6 +11,8 @@ exports.countEmployee = async(req, res) => {
 }
 
 exports.addEmployee = async(req, res) => {
+    const accessory = req.body.accessory.map(item => item.name ).join("|");
+
     let newEmployeeInfo = {
         deviceId: req.body.deviceId.toLowerCase(),
         fullName: req.body.fullName.toLowerCase(),
@@ -19,7 +22,11 @@ exports.addEmployee = async(req, res) => {
         empStatus: req.body.empStatus.toLowerCase(),
         company: req.body.company.toLowerCase(),
         city: req.body.city.toLowerCase(),
+        accessory: accessory.toLowerCase(),
     }
+
+    await issueAccessory(req.body.accessory);
+    console.log(newEmployeeInfo);
     const newEmployee = await Employee.create(newEmployeeInfo);
     res.status(200).json(newEmployee);
 }
@@ -51,6 +58,10 @@ exports.updateEmployee = async(req, res) => {
 
 exports.deleteEmployee = async(req, res) => {
     const id = req.params.id;
+    const emp = await Employee.findOne({attributes: ["accessory"], where: {id: id}});
+    if(emp.dataValues.accessory != "" && req.body.currentStatus == "returned") {
+        await returnAccessory(emp.dataValues.accessory);
+    }
     const deleteStatus = await Employee.destroy({ where: {id: id}});
     res.status(200).json({
         status: deleteStatus,

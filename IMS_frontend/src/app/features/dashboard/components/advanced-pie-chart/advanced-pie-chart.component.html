@@ -1,0 +1,11 @@
+<h2 class="chart-title">{{ heading }}</h2>
+<ngx-charts-advanced-pie-chart
+    [scheme]="colorScheme"
+    [results]="result"
+    [gradient]="gradient"
+    (select)="onSelect($event)"
+    (activate)="onActivate($event)"
+    (deactivate)="onDeactivate($event)"
+>
+</ngx-charts-advanced-pie-chart>
+<!-- [view]="[1000, 400]" -->

@@ -1,0 +1,19 @@
+<nz-table #fixedTable [nzData]="value" [nzScroll]="{ x: 'fit', y: '370px' }">
+  <thead>
+    <tr>
+      <th *ngFor="let title of header">{{ title | capitalize }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of fixedTable.data">
+      <td *ngIf="data.actionDate">{{ data.actionDate }}</td>
+      <td *ngIf="data.actionType">{{ data.actionType }}</td>
+      <td *ngIf="data.description"><nz-tag *ngFor="let detail of data.description.split(' / ')">{{ detail | capitalize }}</nz-tag> </td>
+      <td *ngIf="data.actionBy">{{ data.actionBy }}</td>
+      <td *ngIf="data.po">{{ data.po }}</td>
+      <td *ngIf="data.receivedAt">{{ data.receivedAt }}</td>
+      <td *ngIf="data.value">{{ data.value }}</td>
+      <td *ngFor="let detail of data.poDetails">{{ detail > 0 ? detail : "-" }}</td>
+    </tr>
+  </tbody>
+</nz-table>

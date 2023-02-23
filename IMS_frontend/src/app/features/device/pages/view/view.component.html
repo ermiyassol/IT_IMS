@@ -4,19 +4,32 @@
 
 <div *ngIf="!isLoading" id="main" class="main-content w-full bg-gray-100 p-5">
     <div class=" relative shadow-md sm:rounded-lg">
-      <div class="flex justify-end items-center pb-4">
-          <label for="table-search" class="sr-only">Search</label>
-          <div class="relative">
-              <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <svg class="w-5 h-5 text-green-600 dark:text-green-600" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-              </div>
-              <input [(ngModel)]="searchKey" type="text" id="table-search" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Search for device">
-          </div>
+      <div class="flex justify-end items-center pb-4" [ngClass]="{'justify-between': selectedDevices.length}">
+        <div id="left-end" class="flex space-x-3" *ngIf="selectedDevices.length">
+            <h2 class="font-sans text-lg">{{ selectedDevices.length }} Devices</h2>
+            <button nz-button nzType="primary" (click)="issueDevice()">Issue Devices</button>
+            <button nz-button nzType="primary" (click)="clearSelection()" nzDanger>Clear Selection</button>
+        </div>
+        <div id="right-end">
+            <label for="table-search" class="sr-only">Search</label>
+            <div class="relative">
+                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-green-600 dark:text-green-600" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input [(ngModel)]="searchKey" type="text" id="table-search" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Search for device">
+            </div>
+        </div>
       </div>
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-hidden">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                  
+                <th></th>
+                <th scope="col" class="py-3 px-1">
+                    PO
+                </th>
+                <th scope="col" class="py-3 px-4">
+                    Device Type
+                </th>
                   <th scope="col" class="py-3 px-4">
                       Brand
                   </th>
@@ -38,6 +51,9 @@
                 <th scope="col" class="py-3 px-4">
                     Company
                 </th>
+                <th scope="col" class="py-3 px-4">
+                  Accessories
+              </th>
                   <th scope="col" class="py-3 px-4">
                       Action
                   </th>
@@ -45,9 +61,15 @@
           </thead>
           <tbody>
               <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" *ngFor="let device of devices | searchFilter: searchKey">
-                  
-                  <td scope="row" class="py-4 px-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {{ device.brand | capitalize }}
+                  <td><label nz-checkbox [(ngModel)]="device.checked" (nzCheckedChange)="multipleSelection($event, device.deviceId)" *ngIf="device.status == 'new' || device.status == 'returned'"></label></td>
+                <td scope="row" class="py-4 px-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ displayPO(device.poId) | capitalize }}
+                </td>
+                <td scope="row" class="py-4 px-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ device.deviceType | capitalize }}
+                </td>
+                <td scope="row" class="py-4 px-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      {{ displayBrands(device.brand) | capitalize }}
                   </td>
                   <td class="py-4 px-4">
                     {{ device.model | capitalize }}
@@ -67,6 +89,9 @@
                 <td class="py-4 px-4">
                     {{ device.status == 'issued'? device.company : "-" | capitalize }}
                 </td>
+                <td class="py-4 px-4">
+                  <nz-tag [nzChecked]="true" *ngFor="let acc of device.accessory.split('|')">{{ acc | capitalize }}</nz-tag>                  
+              </td>
                   <td class="py-4 px-4">
                     <button nz-button nz-tooltip nzTooltipTitle="View Detail" class="bg-green-600 text-white" nzSize="small"><span nz-icon nzType="eye" (click)="viewDetail(device.deviceId!)"></span></button>
                   </td>
@@ -77,4 +102,19 @@
     <div class="flex justify-end mt-2">
         <!-- <nz-pagination [nzPageIndex]="currentPage" [nzTotal]="totalPage" nzShowSizeChanger [nzPageSize]="pageSize" (nzPageIndexChange)="paginationChanged(currentPage)"></nz-pagination> -->
     </div>
-   </div>    
+   </div>
+
+   <!-- <nz-modal [(nzVisible)]="isVisible" nzTitle="Device Issuing Form" (nzOnCancel)="isVisible = false">
+    <div *nzModalContent>
+      <p>Modal Content</p>
+      <p>Modal Content</p>
+      <p>Modal Content</p>
+      <p>Modal Content</p>
+      <p>Modal Content</p>
+    </div>
+    <div *nzModalFooter>
+      <span>Modal Footer:</span>
+      <button nz-button nzType="default" (click)="isVisible = false">Custom Callback</button>
+      <button nz-button nzType="primary" (click)="isVisible = false" [nzLoading]="isConfirmLoading">Custom Submit</button>
+    </div>
+  </nz-modal> -->

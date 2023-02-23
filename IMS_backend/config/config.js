@@ -3,7 +3,7 @@ const PORT = process.env.PORT || 8000
 
 
 const POOL = {
-    max: 5,
+    max: 50,
     min: 0,
     acquire: 30000,
     idle: 10000

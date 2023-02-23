@@ -1,0 +1,26 @@
+<nz-divider nzText="Accessories"></nz-divider>
+<!-- <nz-checkbox-group *ngIf="showAccessory" [(ngModel)]="checkOptionsOne" (click)="updateSingleChecked($event)"></nz-checkbox-group>
+<nz-radio-group *ngIf="!showAccessory" [(ngModel)]="radioValue"  (ngModelChange)="accessoryStatusSelected()">
+  <label nz-radio nzValue="new">New</label>
+  <label nz-radio nzValue="return">Old</label>
+</nz-radio-group> -->
+<!-- <nz-checkbox-wrapper style="width: 100%;" (nzOnChange)="log($event)">
+  <div nz-row>
+    <div nz-col nzSpan="8"><label nz-checkbox nzValue="A" [ngModel]="true">A</label></div>
+    <div nz-col nzSpan="8"><label nz-checkbox nzValue="B">B</label></div>
+    <div nz-col nzSpan="8"><label nz-checkbox nzValue="C">C</label></div>
+    <div nz-col nzSpan="8"><label nz-checkbox nzValue="D">D</label></div>
+    <div nz-col nzSpan="8"><label nz-checkbox nzValue="E">E</label></div>
+  </div>
+</nz-checkbox-wrapper> -->
+<div *ngIf="showAccessory" class="ml-5">
+  <span *ngFor="let item of checkOptionsOne; let i = index">
+    <label *ngIf="(item.new > 0 || item.return > 0) && !showCheckbox" nz-checkbox class="text-2xl" [(ngModel)]="item.checked" (ngModelChange)="AccessorySelected($event, i)">{{ item.label | capitalize }}</label>
+    <nz-tag *ngIf="showCheckbox && data.includes(item.value)" [nzChecked]="true">{{ item.label | capitalize }}</nz-tag>
+  </span>
+</div>
+
+<nz-radio-group *ngIf="!showAccessory" [(ngModel)]="radioValue"  (ngModelChange)="accessoryStatusSelected()">
+  <label *ngIf="checkOptionsOne[selectedAccessoryIndex].new > 0" nz-radio nzValue="new">New</label>
+  <label *ngIf="checkOptionsOne[selectedAccessoryIndex].return > 0" nz-radio nzValue="return">Old</label>
+</nz-radio-group>

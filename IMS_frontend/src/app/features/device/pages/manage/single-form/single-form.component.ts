@@ -5,7 +5,8 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { Device } from '../../../model/device.model';
 import { History } from '../../../model/history.model';
 import { DeviceService } from '../../../service/device.service';
-import { DeviceStoreService } from '../../../store/device-store.service';
+import { StoreService } from '../../../../../shared/store/store.service';
+import { compileNgModule } from '@angular/compiler';
 
 @Component({
   selector: 'app-single-form',
@@ -16,8 +17,8 @@ export class SingleFormComponent implements OnInit {
   mainForm!: UntypedFormGroup;
   issueForm!: UntypedFormGroup;
   stateForm!: UntypedFormGroup;
-  brands: string[] = [];
-  models: string[] = [];
+  brands: any[] = [];
+  models: any[] = [];
   status: string[] = [];
   issuingRemarks: string[] = [];
   formSubmitted = false;
@@ -32,7 +33,44 @@ export class SingleFormComponent implements OnInit {
   updatedId = "";
   deviceHistory: History[] = [];
   employeeDetail: any = [];
-  
+  deviceTypes: string[] = [];
+  purchaseOrders: any[] = [];
+  selectedDeviceDetail: any[] = [];
+  issueFormVisibility = true;
+
+  accessoryChanged(accessories: any[]) {
+    let accessoryDetail: any[] = [];
+    accessories.forEach(item => {
+      if(item.checked) {
+        accessoryDetail.push({name: item.value, type: item.type});
+      }
+    })
+    
+    this.issueForm.patchValue({accessory: accessoryDetail})
+  }
+
+  deleteDevice(id: string) {
+    const index = this.selectedDeviceDetail.findIndex(device => device.id == id);
+    if(index > -1) { this.selectedDeviceDetail.splice(index, 1); }
+  }
+
+  issueDevices() {
+    // todo Validate the issueing form and create an API and service to takecare of it
+    console.log("devices - ", this.selectedDeviceDetail);
+    this.formSubmitted = true;
+    if(this.issueForm.valid) {
+      this.deviceService.issueMultipleDevice(this.selectedDeviceDetail, this.issueForm.value).then(() => {
+        this.message.display("success", "Devices Issued Successfully");
+        this.issueFormVisibility = false;
+        this.issueForm.reset();
+        this.isLoading = false;
+    })
+    }
+    // else {
+    //   console.log("Form Invalid!");
+    // }
+  }
+
   editDetails() {
     this.editFields = true;
   }
@@ -51,6 +89,8 @@ export class SingleFormComponent implements OnInit {
     } else if(this.editFields) {
       const previousData = this.deviceDetail[0];
       this.mainForm.setValue({
+        poId: previousData.poId,
+        deviceType: previousData.deviceType,
         brand: previousData.brand,
         serialNumber: previousData.serialNumber,
         assetTagNumber: previousData.assetTagNumber,
@@ -63,6 +103,8 @@ export class SingleFormComponent implements OnInit {
 
   resetMainField() {
     this.mainForm.setValue({
+      poId: "",
+      deviceType: "",
       brand: "",
       serialNumber: "",
       assetTagNumber: "",
@@ -70,17 +112,20 @@ export class SingleFormComponent implements OnInit {
       status: "new",
     })
     this.models = [];
+    this.brands = [];
     this.formSubmitted = false;
   }
 
   brandChanged(param: string = "") {
-    this.models = this.deviceStoreService.getModels(param == ""? this.mainForm.value.brand : param);
-    console.log(this.models);
+    this.models = this.storeService.getModels(param == ""? this.mainForm.value.brand : param);
+  }
+
+  deviceTypeChanged(param: string = "") {
+    this.brands = this.storeService.getBrands(param == ""? this.mainForm.value.deviceType : param);
   }
 
   empStatusChanged() {
-    console.log("selected Employee Status", this.issueForm.value.empStatus);
-    this.companies = this.deviceStoreService.getCompany(this.issueForm.value.empStatus);
+    this.companies = this.storeService.getCompany(this.issueForm.value.empStatus.toLowerCase());
   }
 
   private addDevice() {
@@ -91,7 +136,6 @@ export class SingleFormComponent implements OnInit {
       this.message.display("success", "New device added successfully.")
       // todo reset form
       this.resetMainField();
-      console.log(this.mainForm.value);
       // ! todo  redirect to table page
     }, errorMessage => {
       this.isLoading = false;
@@ -164,20 +208,44 @@ export class SingleFormComponent implements OnInit {
       if(this.mainForm.value.status == "issued" && this.issueForm.valid) { return true; } 
       else if(this.mainForm.value.status == "damaged" && this.stateForm.valid) { return true; }
       else if(this.mainForm.value.status == "returned" && this.stateForm.valid) { return true; }
+      else if(this.mainForm.value.status == "lost" && this.stateForm.valid) { return true; }
       else if(this.mainForm.value.status == "new" || this.mainForm.value.status == "under maintenance") { return true; }
       else { return false; }
     } else { return false; }
   }
 
   backToHome() {
-    this.routes.navigate(['../../'], {relativeTo: this.route});
+    this.routes.navigate(['main/device/view'],);
   }
 
-  constructor(private route: ActivatedRoute, private routes: Router, private message: MessageService, private deviceService: DeviceService, private fb: UntypedFormBuilder, private deviceStoreService: DeviceStoreService) {}
+  constructor(private route: ActivatedRoute, private routes: Router, private message: MessageService, private deviceService: DeviceService, private fb: UntypedFormBuilder, private storeService: StoreService) {}
+
+  displayPO(id: string) {
+    return this.purchaseOrders.filter(po => po.id == id).map(po => po.purchaseOrder).join("");
+  }
+
+  displayBrand(id: string) {
+    return this.brands.filter(brand => brand.id == id).map(brand => brand.brandName).join("");
+  }
+
+  private fetchData() {
+    this.status = this.storeService.getStatus();
+    this.issuingRemarks = this.storeService.getIssuingRemark();
+    this.cities = this.storeService.getCity();
+    this.deviceTypes = this.storeService.getDeviceType();
+    this.purchaseOrders = this.storeService.getAllPurchases();
+  }
 
   ngOnInit(): void {
+    this.fetchData();
+
     const id = this.route.snapshot.paramMap.get('id');
-    
+    const detail = this.route.snapshot.paramMap.get('detail');
+
+    this.selectedDeviceDetail = this.deviceService.getSelectedDevice().map(device => { return {...device, checked: false}});
+
+    if(detail && this.selectedDeviceDetail.length == 0) { this.routes.navigate(["../../../view"], {relativeTo: this.route}); }
+
     if (id) {
       this.isLoading = true;
       this.updatedId = id;
@@ -190,6 +258,7 @@ export class SingleFormComponent implements OnInit {
         this.routes.navigate(["../../"], {relativeTo: this.route});
       } else {
         // fetchModel function
+        this.deviceTypeChanged(this.deviceDetail[0].deviceType)
         this.brandChanged(this.deviceDetail[0].brand);
         this.employeeDetail = this.deviceService.findEmployeeByDevice(this.updatedId);
       }
@@ -199,6 +268,8 @@ export class SingleFormComponent implements OnInit {
     this.formUse = pathArr[pathArr.length - 1];
 
     this.mainForm = this.fb.group({
+      poId: [this.deviceDetail.length > 0 ? this.deviceDetail[0].poId : "", [Validators.required]],
+      deviceType: [this.deviceDetail.length > 0 ? this.deviceDetail[0].deviceType : "", [Validators.required]],
       brand: [this.deviceDetail.length > 0 ? this.deviceDetail[0].brand : "", [Validators.required]],
       serialNumber: [this.deviceDetail.length > 0 ? this.deviceDetail[0].serialNumber : "", [Validators.required]],
       assetTagNumber: [this.deviceDetail.length > 0 ? this.deviceDetail[0].assetTagNumber : "", [Validators.required]],
@@ -214,7 +285,8 @@ export class SingleFormComponent implements OnInit {
       issuingRemark: [this.employeeDetail.length > 0 ? this.employeeDetail[0].remark: "", [Validators.required]],
       empStatus: [this.employeeDetail.length > 0 ? this.employeeDetail[0].empStatus: "", [Validators.required]],
       company: [this.employeeDetail.length > 0 ? this.employeeDetail[0].company: ""],
-      city: [this.employeeDetail.length > 0 ? this.employeeDetail[0].city: ""]
+      city: [this.employeeDetail.length > 0 ? this.employeeDetail[0].city: ""],
+      accessory: [this.employeeDetail.length > 0 ? this.employeeDetail[0].accessory: []]
     });
 
     this.stateForm = this.fb.group({
@@ -222,11 +294,15 @@ export class SingleFormComponent implements OnInit {
       description: ["", [Validators.required]],
     });
 
-    this.brands = this.deviceStoreService.getBrands();
-    console.log(this.brands);
-    this.status = this.deviceStoreService.getStatus();
-    this.issuingRemarks = this.deviceStoreService.getIssuingRemark();
-    this.cities = this.deviceStoreService.getCity();
+    this.deviceService.multiDeviceNotifier.subscribe(deviceId => {
+      const index = this.selectedDeviceDetail.findIndex(device => device.id == deviceId);
+      this.selectedDeviceDetail[index].checked = true;
+    })
+  }
 
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.deviceService.resetSelectedDevice();
   }
 }

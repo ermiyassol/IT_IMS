@@ -1,0 +1,10 @@
+<div class="card-container">
+  <nz-tabset nzType="card">
+    <nz-tab nzSize="large" [nzTitle]="'general' | capitalize">
+      <app-general-content></app-general-content>
+    </nz-tab>
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab | capitalize">
+      <app-specific-content [heading]="tab"></app-specific-content>
+    </nz-tab>
+  </nz-tabset>
+</div>

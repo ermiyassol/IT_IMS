@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: "view", component: ViewComponent},
   { path: "add", component: ManageComponent},
   { path: "view/:id/detail", component: SingleFormComponent},
+  { path: "issue/devices/:detail", component: SingleFormComponent},
   // { path: ":id/edit", component: ManageComponent},
 ];
 

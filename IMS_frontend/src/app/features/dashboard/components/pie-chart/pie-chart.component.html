@@ -1,0 +1,14 @@
+<h2 class="chart-title">{{ heading }}</h2>
+<ngx-charts-pie-chart
+  [scheme]="colorScheme"
+  [results]="value"
+  [gradient]="gradient"
+  [legend]="showLegend"
+  [legendPosition]="legendPosition"
+  [labels]="showLabels"
+  [doughnut]="isDoughnut"
+  (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+  >
+</ngx-charts-pie-chart>

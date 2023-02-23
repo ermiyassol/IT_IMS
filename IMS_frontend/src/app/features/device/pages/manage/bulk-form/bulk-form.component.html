@@ -1,4 +1,8 @@
-<div id="main" class="main-content w-full bg-gray-100 p-5">
+<div class="flex justify-center my-12" *ngIf="isLoading">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div *ngIf="!isLoading" id="main" class="main-content w-full bg-gray-100 p-5">
   <form class="w-full" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="flex items-center justify-center w-full">
@@ -6,16 +10,44 @@
             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                 <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Only .CSV file is supported</p>
             </div>
-            <input id="dropzone-file" type="file" class="hidden" />
+            <input (change)="onFileChange($event)" formControlName="file" id="dropzone-file" type="file" class="hidden" />
         </label>
     </div> 
-     
+
     </div> 
     <div class="flex justify-start">
-      <button nz-button class="w-2/12 h-10 bg-green-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Device</button>
-      <a class="self-end ml-2 text-red-600 font-bold text-xl" href="">Download Template</a>
+      <button nz-button class="w-2/12 h-10 bg-green-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" [disabled]="!fileValidated">Upload Devices</button>
+      <a class="self-end ml-2 text-red-600 font-bold text-xl" (click)="downloadBulkTemplate()">Download Template</a>
     </div>
   </form>
+</div>
+
+<div class="w-full mt-5" *ngIf="listOfError.length > 0">
+  <h1 class="justify-center font-serif text-2xl">Error Fields</h1>
+  <nz-table #basicTable [nzData]="listOfError">
+    <thead>
+      <tr>
+        <th>Purchase Order</th>
+        <th>Device Type</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Serial Number</th>
+        <th>Asset Tag Number</th>
+        <th>Error Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td [ngClass]="{'error-box': !data.data.purchaseOrder || data.message.includes('Purchase Order')}">{{ data.data.purchaseOrder }}</td>
+        <td [ngClass]="{'error-box': !data.data.deviceType || data.message.includes('Device Type')}">{{ data.data.deviceType }}</td>
+        <td [ngClass]="{'error-box': !data.data.brand || data.message.includes('Brand')}">{{ data.data.brand }}</td>
+        <td [ngClass]="{'error-box': !data.data.model || data.message.includes('Model')}">{{ data.data.model }}</td>
+        <td [ngClass]="{'error-box': !data.data.serialNumber}">{{ data.data.serialNumber }}</td>
+        <td [ngClass]="{'error-box': !data.data.assetTagNumber}">{{ data.data.assetTagNumber }}</td>
+        <td class="text-red-600">{{ data.message }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
 </div>

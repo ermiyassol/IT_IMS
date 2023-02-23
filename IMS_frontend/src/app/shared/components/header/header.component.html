@@ -7,12 +7,41 @@
       (click)="changeView()"
     ></span>
     <div class=" w-full flex justify-end">
-      <div class="w-14 text-center">
-        <span class="text-3xl align-middle " nz-icon nzType="global" nzTheme="outline"></span>
+
+      <div class="w-1/3">
+<nz-list class="demo-loadmore-list">
+        <nz-list-item>
+          <ng-container>
+            <nz-list-item-meta
+              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              [nzDescription]="user.role | capitalize"
+            >
+              <nz-list-item-meta-title>
+                <a href="https://ng.ant.design">{{ user.userName.replace('.', ' ') | capitalize }}</a>
+              </nz-list-item-meta-title>
+            </nz-list-item-meta>
+          </ng-container>
+        </nz-list-item>
+      </nz-list>
       </div>
       <div class="w-14 border-l-2 text-center">
-        <span class="text-3xl align-middle " nz-icon nzType="user" nzTheme="outline"></span>
+        <span nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzDropdownMenu]="menu" class="text-3xl align-middle " nz-icon nzType="setting" nzTheme="outline"></span>
+      </div>
+      <div class="w-5 text-center">
+        <!-- <span class="text-3xl align-middle " nz-icon nzType="global" nzTheme="outline"></span> -->
       </div>
       </div>
     </div>
 </nz-header>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <!-- <li nz-menu-item>
+
+    <!-- <li nz-menu-item></li> -->
+    <li nz-menu-item>Setting</li>
+    <li nz-menu-item nzDanger (click)="logout()"><span nz-icon nzType="logout" nzTheme="outline"></span> Logout</li>
+  </ul>
+</nz-dropdown-menu>
+
+

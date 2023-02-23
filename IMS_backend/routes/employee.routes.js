@@ -8,6 +8,6 @@ router.post("/addEmployee", addEmployee);
 router.get("/fetchAllEmployee", fetchAllEmployee);
 router.get("/findEmployee/:id", findEmployee);
 router.put("/updateEmployee/:id", updateEmployee);
-router.delete("/deleteEmployee/:id", deleteEmployee);
+router.post("/deleteEmployee/:id", deleteEmployee);
 
 module.exports = router;

@@ -1,0 +1,64 @@
+<nz-tabset>
+  <!-- Device Type -->
+  <nz-tab [nzTitle]="deviceType">
+    <ng-template #deviceType>
+      <span nz-icon nzType="minus"></span>
+      Device Type
+    </ng-template>
+      <app-independent-entry [type]="'device type'"></app-independent-entry>
+  </nz-tab>
+
+  <!-- Device Brand -->
+  <nz-tab [nzTitle]="deviceBrand">
+    <ng-template #deviceBrand>
+      <span nz-icon nzType="minus"></span>
+      Device Brand
+    </ng-template>
+    <app-dependent-entry [type]="'device brand'"></app-dependent-entry>
+  </nz-tab>
+
+  <!-- Device Model -->
+  <nz-tab [nzTitle]="deviceModel">
+    <ng-template #deviceModel>
+      <span nz-icon nzType="minus"></span>
+      Device Model
+    </ng-template>
+    <app-dependent-entry [type]="'device model'"></app-dependent-entry>
+  </nz-tab>
+
+  <!-- City -->
+  <nz-tab [nzTitle]="city">
+    <ng-template #city>
+      <span nz-icon nzType="minus"></span>
+      City
+    </ng-template>
+    <app-independent-entry [type]="'city'"></app-independent-entry>
+  </nz-tab>
+
+  <!-- Company -->
+  <nz-tab [nzTitle]="company">
+    <ng-template #company>
+      <span nz-icon nzType="minus"></span>
+      Company
+    </ng-template>
+    <app-dependent-entry [type]="'company'"></app-dependent-entry>
+  </nz-tab>
+
+  <!-- System Role -->
+  <nz-tab [nzTitle]="systemRole">
+    <ng-template #systemRole>
+      <span nz-icon nzType="minus"></span>
+      System Role
+    </ng-template>
+    <!-- <app-independent-entry [type]="'device type'"></app-independent-entry> -->
+  </nz-tab>
+
+    <!-- Purchase Order -->
+    <nz-tab [nzTitle]="purchase">
+      <ng-template #purchase>
+        <span nz-icon nzType="minus"></span>
+        Purchase Orders
+      </ng-template>
+      <app-purchase-order-entry></app-purchase-order-entry>
+    </nz-tab>
+</nz-tabset>

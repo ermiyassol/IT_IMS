@@ -16,8 +16,6 @@ for monday
 - check serial number & asset tag checkup 
 
 
-
-
 status change scenario
 issue - 
         - main field update
@@ -52,3 +50,37 @@ feedback
 todo
 - 
 - 
+
+
+
+when comming
+- connect the crud opperations ui with the controller
+
+
+     charts 
+    pie chart 
+- device / status
+- device / models
+- device / brands
+- 
+
+    table
+- logs display
+- 
+
+    column chart
+- device / company
+- device / city
+- device / po
+- 
+
+    line graph
+- daily issued laptop
+- 
+
+
+todo remaining task
+ - add lost status to the device
+ - add brand selecting dropdown to model stat chart
+ - make route for specific model stat
+ - disable page visibility of change log for the specific device

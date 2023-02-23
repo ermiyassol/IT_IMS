@@ -31,6 +31,11 @@ app.use("/api/employee", router.employee)
 app.use("/api/history", router.history)
 app.use("/api/company", router.company)
 app.use("/api/city", router.city)
+app.use("/api/account", router.account)
+app.use("/api/purchase", router.purchase)
+app.use("/api/dashboard", router.dashboard)
+app.use("/api/accessory", router.accessory)
+app.use("/api/record", router.record)
 
 app.listen(8000, (state) => {
     console.log("Server Started Successfully!");

@@ -9,6 +9,5 @@ export class History {
         public createdAt?: string,
         public updatedAt?: string,
     ) {
-        
     }
 }

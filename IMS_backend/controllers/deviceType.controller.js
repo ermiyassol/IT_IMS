@@ -9,6 +9,7 @@ exports.updateDeviceType = async(req, res) => {
             console.log("An error occurred while writing JSON Object to File.");
             return console.log(err);
         }
+        res.status(200).json(jsonContent);
 });
 }
 

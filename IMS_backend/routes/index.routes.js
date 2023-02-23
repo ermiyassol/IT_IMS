@@ -7,6 +7,10 @@ const deviceModel = require("../routes/deviceModel.routes");
 const company = require("../routes/company.routes");
 const city = require("../routes/city.routes");
 const auth = require("../routes/auth.routes");
+const account = require("../routes/account.routes")
+const purchase = require("../routes/purchase.routes")
+const dashboard = require("../routes/dashboard.routes")
+const accessory = require("../routes/accessory.routes")
+const record = require("../routes/record.routes")
 
-
-module.exports = {auth, company, city, device, employee, history, deviceType, deviceBrand, deviceModel}
+module.exports = {record, accessory, account, auth, company, city, device, employee, history, deviceType, deviceBrand, deviceModel, purchase, dashboard}

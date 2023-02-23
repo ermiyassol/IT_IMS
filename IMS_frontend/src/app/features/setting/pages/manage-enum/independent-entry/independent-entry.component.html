@@ -1,0 +1,26 @@
+<h3>List of {{ type | capitalize }}</h3>
+<div class="w-1/2 bg-gray-100 px-3 py-1" >
+  <nz-tag
+        *ngFor="let title of titles; let i = index"
+        class="h-6 text-sm my-1"
+        [nzMode]="'default'"
+      >
+        {{ sliceTagName(title) | capitalize }} <span nz-icon nzType="close" nz-popconfirm nzPopconfirmTitle="Are you sure delete this device type?" (nzOnConfirm)="handleClose(i)"></span>
+      </nz-tag>
+      <nz-tag *ngIf="!inputVisible" class="editable-tag" nzNoAnimation (click)="showInput()">
+        <span nz-icon nzType="plus"></span>
+        New Device Type
+      </nz-tag>
+      <input
+        #inputElement
+        nz-input
+        class="my-1"
+        nzSize="small"
+        *ngIf="inputVisible"
+        type="text"
+        [(ngModel)]="inputValue"
+        style="width: 78px;"
+        (blur)="handleInputConfirm()"
+        (keydown.enter)="handleInputConfirm()"
+      />
+</div>

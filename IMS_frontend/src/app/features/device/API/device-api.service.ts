@@ -3,16 +3,46 @@ import { Injectable } from '@angular/core';
 import { timeInterval } from 'rxjs';
 import { Device } from '../model/device.model';
 import { API } from '../../../shared/services/api.store';
+import {HttpHeaders} from "@angular/common/http";
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class DeviceApiService {
 
 constructor(private api: API, private http: HttpClient) {}
 
 // todo check if the server is up
 // DEVICE
+bulkAddDevice = (data: Device[]) => {
+  return new Promise((resolve, reject) => {
+    this.http.post<Device[]>(this.api.bulkAddDevice, data).subscribe(response => {
+      if(response) {
+        resolve(response);
+      } else {
+        reject("Failed to add device!! Please try again.")
+      }
+    });
+  });
+};
+
+downloadBulkTemplate = () => {
+  return new Promise((resolve, reject) => {
+  this.http
+  .get(this.api.downloadBulkTemplate, { responseType: "blob" }) //set response Type properly (it is not part of headers)
+  .toPromise()
+  .then((blob: any) => {
+      saveAs(blob, "IT_IMS_device_bulk_template.csv"); 
+      resolve(true);
+  })
+  .catch(err => {
+    reject("download error");
+    console.error("download error = ", err);
+  })
+  })
+}
+
 countDevice = () => {
   return new Promise((resolve, reject) => {
     this.http.get(this.api.countDevice).subscribe(response => {
@@ -130,9 +160,9 @@ findEmployee = (id: string) => {
   });
 };
 
-deleteEmployee = (id: string) => {
+deleteEmployee = (id: string, currentStatus: string) => {
   return new Promise((resolve, reject) => {
-    this.http.delete<any>(this.api.deleteEmployee + id).subscribe(response => {
+    this.http.post<any>(this.api.deleteEmployee + id, {currentStatus: currentStatus}).subscribe(response => {
       if(response.status) {
         resolve(response.employeeId);
       } else {

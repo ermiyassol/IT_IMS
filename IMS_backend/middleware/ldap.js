@@ -15,7 +15,7 @@ async function auth(userName, password) {
     username: userName,
     // starttls: false
   }
-
+  
   return await authenticate(options);
 }
 

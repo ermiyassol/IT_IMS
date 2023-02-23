@@ -7,9 +7,10 @@ import { BulkFormComponent } from './pages/manage/bulk-form/bulk-form.component'
 import { SingleFormComponent } from './pages/manage/single-form/single-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchPipe } from './service/search.pipe';
+import { AccessoryComponent } from './components/accessory/accessory.component';
 
 @NgModule({
-    declarations: [SearchPipe, ViewComponent, ManageComponent, BulkFormComponent, SingleFormComponent],
+    declarations: [SearchPipe, ViewComponent, ManageComponent, BulkFormComponent, SingleFormComponent, AccessoryComponent],
     imports: [DeviceRoutingModule, SharedModule],
     exports: [],
     providers: [],

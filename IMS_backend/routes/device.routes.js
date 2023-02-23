@@ -1,8 +1,10 @@
 const express = require("express");
-const { addDevice, fetchAllDevice, findDevice, updateDevice, deleteDevice, countDevice } = require("../controllers/device.controller");
+const { bulkAddDevice, addDevice, fetchAllDevice, findDevice, updateDevice, deleteDevice, countDevice, downloadBulkTemplate } = require("../controllers/device.controller");
 const router = express.Router();
 
 
+router.post("/bulkAddDevice", bulkAddDevice)
+router.get("/downloadBulkTemplate", downloadBulkTemplate)
 router.get("/countDevice", countDevice);
 router.post("/addDevice", addDevice);
 router.get("/fetchAllDevice", fetchAllDevice);

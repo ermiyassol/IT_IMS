@@ -1,12 +1,5 @@
 <nz-tabset>
-  <!-- single -->
-  <nz-tab [nzTitle]="singleEntry">
-    <ng-template #singleEntry>
-      <span nz-icon nzType="minus"></span>
-      Single Entry
-    </ng-template>
-    <app-single-form></app-single-form>
-  </nz-tab>
+  
 
   <!-- single -->
   <nz-tab [nzTitle]="bulkUpload">
@@ -15,5 +8,14 @@
       Bulk Upload
     </ng-template>
     <app-bulk-form></app-bulk-form>
+  </nz-tab>
+  
+  <!-- single -->
+  <nz-tab [nzTitle]="singleEntry">
+    <ng-template #singleEntry>
+      <span nz-icon nzType="minus"></span>
+      Single Entry
+    </ng-template>
+    <app-single-form></app-single-form>
   </nz-tab>
 </nz-tabset>

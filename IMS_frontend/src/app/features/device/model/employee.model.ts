@@ -9,6 +9,7 @@ export class Employee {
         public empStatus: string,
         public company: string,
         public city: string,
+        public accessory: any,
         public id?: string,
         public createdAt?: string,
         public updatedAt?: string,

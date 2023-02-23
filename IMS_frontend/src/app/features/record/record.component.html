@@ -1,0 +1,125 @@
+<nz-divider nzText="User Adding Form"></nz-divider>
+<form class="w-full" nz-form [formGroup]="mainForm" (ngSubmit)="submitForm()">
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <nz-form-item class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+      <nz-form-control>
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="date">
+          DATE
+        </label>
+        <div class="relative">
+          <input [ngClass]="{'border-red-600': !mainForm.controls['date'].valid && formSubmitted}"  formControlName="date" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="date" type="text" placeholder=". . . . ">
+          <!-- <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div> -->
+        </div>
+        <p *ngIf="!mainForm.controls['date'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
+      </nz-form-control>
+    </nz-form-item>
+    </div>
+    <div class="flex flex-wrap -mx-3 mb-6">
+    <nz-form-item class="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+      <nz-form-control >
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="accessory">
+          ACCESSORY
+        </label>
+        <div class="relative">
+          <nz-select nzAllowClear nzPlaceHolder="Select Accessory" [ngClass]="{'border-red-600': !mainForm.controls['accessory'].valid && formSubmitted}" formControlName="accessory" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700  pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="accessory">
+            <span  *ngFor="let accessory of accessories">
+              <nz-option *ngIf="accessory.new + accessory.return > 0" [nzLabel]="accessory.name | capitalize" [nzValue]="accessory.name"></nz-option>
+            </span>
+
+          </nz-select>
+          <!-- <select [ngClass]="{'border-red-600': !mainForm.controls['description'].valid && formSubmitted}" formControlName="description" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="description"> -->
+            <!-- <option label="--Select Description--" value=""></option> -->
+            <!-- <option *ngFor="let description of descriptions" [label]="description.label | capitalize" [value]="description.value"></option> -->
+          <!-- </select> -->
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <!-- <p *ngIf="!mainForm.controls['accessory'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p> -->
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="w-full md:w-1/6 px-3 mb-6 md:mb-0" *ngIf="this.mainForm.value.accessory">
+      <nz-form-control >
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="type">
+          ACCESSORY STATUS
+        </label>
+        <div class="relative">
+          <nz-select nzAllowClear nzPlaceHolder="Select Accessory Status" [ngClass]="{'border-red-600': !mainForm.controls['type'].valid && formSubmitted}" formControlName="type" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700  pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="type">
+            <nz-option *ngIf="returnAccessoryValue('new')" [nzLabel]="'new' | capitalize" nzValue="new"></nz-option>
+            <nz-option *ngIf="returnAccessoryValue('return')" [nzLabel]="'old' | capitalize" nzValue="return"></nz-option>
+          </nz-select>
+          <!-- <select [ngClass]="{'border-red-600': !mainForm.controls['description'].valid && formSubmitted}" formControlName="description" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="description"> -->
+            <!-- <option label="--Select Description--" value=""></option> -->
+            <!-- <option *ngFor="let description of descriptions" [label]="description.label | capitalize" [value]="description.value"></option> -->
+          <!-- </select> -->
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+          </div>
+        </div>
+        <p *ngIf="!mainForm.controls['type'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item class="w-full md:w-4/6 px-3 mb-6 md:mb-0">
+      <nz-form-control >
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="description">
+          DESCRIPTION
+        </label>
+        <textarea formControlName="description" [ngClass]="{'border-red-600': !mainForm.controls['description'].valid && formSubmitted}" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="description" type="text" placeholder="Full Name | Department | Reason | Additional Information" id="" rows="3">
+
+        </textarea>
+        <p *ngIf="!mainForm.controls['description'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
+      </nz-form-control>
+       </nz-form-item>
+       </div>
+       <div class="flex flex-wrap -mx-3 mb-6">
+      <button class="w-full h-8 text-green-600 border border-green-600  hover:bg-green-600 hover:text-white font-bold py-1 rounded">Add Record</button>
+   </div>
+ </form>
+
+ <nz-divider nzText="Records List"></nz-divider>
+
+<div class="flex justify-start">
+  <div id="right-end">
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative">
+        <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-green-600 dark:text-green-600" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+        </div>
+        <input [(ngModel)]="searchKey" type="text" id="table-search" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Search for device">
+    </div>
+  </div>
+</div>
+
+ <nz-table #basicTable [nzData]="records">
+  <!-- <nz-table #basicTable > -->
+  <thead>
+    <tr>
+      <th>Record ID</th>
+      <th>Date</th>
+      <th>Accessory</th>
+      <th>Description</th>
+      <th>Recorded By</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data | recordSearch: searchKey">
+      <!-- <tr> -->
+      <td>{{ data.id }}</td>
+      <td>{{ data.date }}</td>
+      <td>{{ data.accessory ? data.accessory : "N/A" | capitalize }}</td>
+      <td>{{ data.description }}</td>
+      <td>{{ data.actionBy | capitalize }}</td>
+      <td nz-tooltip [nzTooltipTitle]="username != data.actionBy ? 'Only ' + data.actionBy + ' can delete this record!' : ''">
+        <button nz-button nz-popconfirm nzPopconfirmTitle="Are you sure?" [nzIcon]="iconTpl" nzType="default" (nzOnConfirm)="deleteRecord(data.id!)"   [disabled]="username != data.actionBy" nzDanger>Delete Record</button>
+        <ng-template #iconTpl>
+          <span nz-icon nzType="question-circle-o" style="color: red;"></span>
+        </ng-template>
+
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<!-- adding role modal -->
