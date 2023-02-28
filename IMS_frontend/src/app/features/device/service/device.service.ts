@@ -32,17 +32,34 @@ getSelectedDevice() {
 
 resetSelectedDevice() { this.selectedDeviceData = []; }
 
-issueMultipleDevice(devices: Device[], empData: Employee) {
+issueMultipleDevice(devices: Device[], empData: any) {
   return new Promise((resolve, reject) => [
     devices.forEach((device, index, data) => {
       setTimeout(() => {
         device.status = "issued";
-        this.issueDevice(device.id!, device, empData).then(() => {
+        this.issueDevice(device.id!, device, empData, "Multiple").then(() => {
           this.multiDeviceNotifier.next(device.id!)
-          if(index == data.length - 1) { resolve(true); }
+          if(index == data.length - 1) { 
+            const devicesDetail = devices.map(device => { return { serialNumber: device.serialNumber, assetTagNumber: device.assetTagNumber }})
+            let deviceType: string[] = [];
+            devices.forEach(device => { if(!deviceType.includes(device.deviceType)) {
+              deviceType.push(device.deviceType);
+            }})
+
+            const docData = {
+              deviceType: deviceType.join(" | "),
+              fullName: empData.fullName,
+              department: empData.designation,
+              reason: empData.issuingRemark,
+              type: "multiple",
+              devices: devicesDetail,
+          }
+            this.API.generateLiabilityForm(docData, empData.fullName).then(() => {}, error => reject(error));
+
+            resolve(true); 
+          }
         })
       }, 1000);
-
     })
   ])
 }
@@ -225,7 +242,7 @@ updateDevice(formData: any, id: string) {
 }
 
 // todo 1, work on the backend, 2. check if it is supported by the multiple issue
-issueDevice(deviceId: string, devData: Device, empData: any) {
+issueDevice(deviceId: string, devData: Device, empData: any, docType: any = "") {
   return new Promise((resolve, reject) => {
     const id = deviceId.toString();
     // const accessory = empData.accessory.map((item: any) => { return item.name }).join("|"); // todo should be at the backend
@@ -236,6 +253,23 @@ issueDevice(deviceId: string, devData: Device, empData: any) {
       this.API.addEmployee(newEmployee).then((empResponse: any) => {
         this.STORE.addEmployee(empResponse);
         this.addHistory(newHistory).then(response => {
+          if(docType == "") {
+            const docData = {
+              deviceType: devData.deviceType,
+              brand: this.STORE.getBrandName(devData.brand),
+              model: devData.model,
+              serialNumber: devData.serialNumber,
+              assetTagNumber: devData.assetTagNumber,
+              fullName: empData.fullName,
+              department: empData.designation,
+              reason: empData.issuingRemark,
+              type: "single",
+              devices: [
+                { serialNumber: devData.serialNumber, assetTagNumber: devData.assetTagNumber },
+            ]
+          }
+            this.API.generateLiabilityForm(docData, empData.fullName).then(() => {}, error => reject(error));
+          }
           resolve("New device issued for " + empData.fullName + ".");
         }, error => reject(error))
       }, error => reject(error))

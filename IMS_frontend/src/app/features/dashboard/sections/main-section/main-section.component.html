@@ -1,4 +1,4 @@
-<div class="card-container">
+<!-- <div class="card-container">
   <nz-tabset nzType="card">
     <nz-tab nzSize="large" [nzTitle]="'general' | capitalize">
       <app-general-content></app-general-content>
@@ -7,4 +7,25 @@
       <app-specific-content [heading]="tab"></app-specific-content>
     </nz-tab>
   </nz-tabset>
+</div> -->
+
+<div class="card-container">
+  <nz-tabset nzType="card">
+    <!-- <nz-tab nzSize="large" [nzTitle]="'general' | capitalize">
+      <app-general-content></app-general-content>
+    </nz-tab> -->
+    <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab | capitalize" (nzClick)="tabClickListener(tab)">
+      <!-- <app-specific-content [heading]="tab"></app-specific-content> -->
+      <router-outlet></router-outlet>
+    </nz-tab>
+  </nz-tabset>
 </div>
+
+<!-- <div class="card-container">
+  <ul nz-menu nzMode="horizontal">
+    <li nz-menu-item nzType="card" nzSelected>
+      <span nz-icon nzType="mail"></span>
+      Desktop
+    </li>
+  </ul>
+</div> -->

@@ -17,12 +17,12 @@ export class GeneralContentComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {
+    console.log("general content field called!!");
     this.dashboardService.fetchGeneralStat().then((response: any) => {
       this.stockDevices = response.stockDevice;
       this.weeklyProgress = response.weeklyProgress;
       this.changeLogs = response.changeLogs;
       this.purchaseOrdersDetail = response.purchaseOrdersDetail;
-      console.log("Api response = ", response);
     });
 
     this.deviceTypes = this.dashboardService.getAllDeviceType();

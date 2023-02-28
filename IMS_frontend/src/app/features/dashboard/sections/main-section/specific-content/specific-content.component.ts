@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '../../../service/dashboard.service';
 
 @Component({
@@ -23,20 +24,28 @@ export class SpecificContentComponent implements OnInit {
       this.deviceModels = response;
     })
   }
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private router: Router, private route: ActivatedRoute, private routes: Router) { }
 
   ngOnInit() {
-    this.dashboardService.fetchSpecificStat(this.heading).then((response: any) => {
-      this.deviceStatus = response.deviceStatus;
-      this.deviceBrands = response.deviceBrands;
-      this.employeeCompany = response.employeeCompany;
-      this.employeeCity = response.employeeCity;
-      this.devicesPO = response.devicesPO;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    console.log("Specific content field called!!");
+    const deviceType = this.route.snapshot.paramMap.get('deviceType');
+    console.log("Device Type - ", deviceType);
+    if(deviceType) {
+      this.dashboardService.fetchSpecificStat(deviceType).then((response: any) => {
+        this.deviceStatus = response.deviceStatus;
+        this.deviceBrands = response.deviceBrands;
+        this.employeeCompany = response.employeeCompany;
+        this.employeeCity = response.employeeCity;
+        this.devicesPO = response.devicesPO;
 
-      console.log("New Response");
-      console.log("heading", this.heading);
-      console.log("response", response);
-    });
+        console.log("New Response");
+        console.log("heading", this.heading);
+        console.log("response", response);
+      });
+    } else {
+      this.routes.navigate(['main']);
+    }
 
     
 

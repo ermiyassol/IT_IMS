@@ -15,6 +15,40 @@ constructor(private api: API, private http: HttpClient) {}
 
 // todo check if the server is up
 // DEVICE
+downloadLiabilityDoc = (docName: string = "") => {
+  return new Promise((resolve, reject) => {
+    console.log("Download liability doc method invoked");
+    this.http
+  .get(this.api.downloadLiabilityDoc, { responseType: "blob" }) //set response Type properly (it is not part of headers)
+  .toPromise()
+  .then((blob: any) => {
+      saveAs(blob, docName + " Liability Form.docx"); 
+      resolve(true);
+  })
+  .catch(err => {
+    reject("download error");
+    console.error("download error = ", err);
+  })
+
+  });
+};
+
+generateLiabilityForm = (data: any, docName: string) => {
+  return new Promise((resolve, reject) => {
+    this.http.post<any>(this.api.generateLiabilityForm, data).subscribe(response => {
+      if(response) {
+        this.downloadLiabilityDoc(docName).then(() => {
+          resolve(response);
+          console.log("The response is coming");
+        })
+      } else {
+        reject("Failed to generate document!! Please try again.")
+      }
+    });
+  });
+};
+
+
 bulkAddDevice = (data: Device[]) => {
   return new Promise((resolve, reject) => {
     this.http.post<Device[]>(this.api.bulkAddDevice, data).subscribe(response => {

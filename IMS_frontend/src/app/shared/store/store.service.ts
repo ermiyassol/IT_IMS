@@ -24,6 +24,11 @@ private accessory: any[] = [];
 private record: any[] = [];
 private session: any = null;
 
+getBrandName(id: string) {
+  const index = this.deviceBrands.findIndex(brand => brand.id == id);
+  return index >= 0 ? this.deviceBrands[index].brandName : "";
+}
+
 setSession(data: any[]) { 
   this.session = data; 
   this.saveLocalStorage(this.session) }
@@ -36,7 +41,14 @@ getSession() {
 }
 
 getUsername() {return this.session.userName.replace(".", " ");}
-getRoles() { return this.session.role; }
+getRoles() { 
+  if(this.session) {
+    return this.session.role;
+  } else {
+    this.getLocalStorage();
+    return this.session.role;
+  }
+   }
 deleteSession() { this.session = null; localStorage.removeItem("session"); }
 saveLocalStorage(data: any) {
   const jsonFile = JSON.stringify(data);

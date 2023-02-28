@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
   })
 
 export class API {
+    // private DOMAIN = "http://10.3.74.173:8080/api" 
     private DOMAIN = "http://localhost:8000/api" 
     private DEVICE = "/device"
     private EMPLOYEE = "/employee"
@@ -70,6 +71,9 @@ export class API {
     findDevice = `${this.DOMAIN}${this.DEVICE}/findDevice/`;
     updateDevice = `${this.DOMAIN}${this.DEVICE}/updateDevice/`;
     deleteDevice = `${this.DOMAIN}${this.DEVICE}/deleteDevice/`;
+    generateLiabilityForm = `${this.DOMAIN}${this.DEVICE}/generateLiabilityForm/`;
+    downloadLiabilityDoc = `${this.DOMAIN}${this.DEVICE}/downloadLiabilityDoc/`;
+    
     // ----------CITY----------------------------------------------------------------
     updateDeviceType = `${this.DOMAIN}${this.DEVICE}/updateDeviceType`;
     fetchAllDeviceType = `${this.DOMAIN}${this.DEVICE}/fetchAllDeviceType`;

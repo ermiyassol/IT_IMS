@@ -14,13 +14,13 @@ import { MainSectionComponent } from './sections/main-section/main-section.compo
 import { SpecificContentComponent } from './sections/main-section/specific-content/specific-content.component';
 import { GeneralContentComponent } from './sections/main-section/general-content/general-content.component';
 import { TableComponent } from './components/table/table.component';
-
+import { DashboardRoutingModule } from "./dashboard-routing.module";
 import * as CanvasJSAngularChart from '../../../assets/canvasjs-3.7.5/canvasjs.angular.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
  
 @NgModule({
     declarations: [DashboardComponent, CardComponent, TopCardsComponent, ColumnChartComponent, PieChartComponent, AdvancedPieChartComponent, GroupedColumnChartComponent, LineChartComponent, MainSectionComponent, SpecificContentComponent, GeneralContentComponent, TableComponent, CanvasJSChart],
-    imports: [SharedModule, NgxChartsModule,],
+    imports: [SharedModule, NgxChartsModule, DashboardRoutingModule],
     exports: [],
     providers: [],
 })

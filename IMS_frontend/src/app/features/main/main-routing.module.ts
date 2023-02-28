@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RecordComponent } from '../record/record.component';
 import { MainComponent } from './main.component';
+import { AuthGuard } from "./service/auth-guard.service";
 
 const routes: Routes = [
   { path: "", component: MainComponent, children: [
     { path: "", redirectTo: "dashboard", pathMatch: "full"},
-    { path: "dashboard", component: DashboardComponent },
-    { path: 'device', loadChildren: () => import('../device/device.module').then((e) => e.DeviceModule)},
-    { path: 'setting', loadChildren: () => import('../setting/setting.module').then((e) => e.SettingModule)},
-    { path: 'record', component: RecordComponent},
+    { path: "dashboard", canActivate: [AuthGuard], loadChildren: () => import('../dashboard/dashboard.module').then((e) => e.DashboardModule)},
+    { path: 'device', canActivate: [AuthGuard], loadChildren: () => import('../device/device.module').then((e) => e.DeviceModule)},
+    { path: 'setting', canActivate: [AuthGuard], loadChildren: () => import('../setting/setting.module').then((e) => e.SettingModule)},
+    { path: 'record', canActivate: [AuthGuard], component: RecordComponent},
   ] },
 ];
 

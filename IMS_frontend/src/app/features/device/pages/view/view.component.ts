@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { StoreService } from 'src/app/shared/store/store.service';
 import { Device } from '../../model/device.model';
 import { DeviceService } from '../../service/device.service';
 
@@ -19,6 +20,7 @@ export class ViewComponent implements OnInit {
   purchaseOrders: any[] = [];
   brands: any[] = [];
   selectedDevices: any[] = [];
+  role = "";
 
   issueDevice() {
     this.deviceService.setSelection(this.selectedDevices);
@@ -63,9 +65,10 @@ export class ViewComponent implements OnInit {
     return this.brands.filter(brand => brand.id == id).map(brand => brand.brandName).join("");
   }
 
-  constructor(private route: ActivatedRoute, private routes: Router, private deviceService: DeviceService, private message: MessageService) { }
+  constructor(private STORE: StoreService, private route: ActivatedRoute, private routes: Router, private deviceService: DeviceService, private message: MessageService) { }
 
   ngOnInit() {
+    this.role = this.STORE.getRoles();
     this.isLoading = true;
     this.deviceService.fetchAll().then((response: any[]) => {
       this.devices = response;

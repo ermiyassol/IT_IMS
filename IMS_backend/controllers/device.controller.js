@@ -1,5 +1,9 @@
 const db = require("../config/db.config");
 const path = require('path');
+const fs = require("fs");
+const PizZip = require("pizzip");
+const Docxtemplater = require("docxtemplater");
+
 const Device = db.device;
 
 exports.bulkAddDevice = async(req, res) => {
@@ -18,6 +22,62 @@ exports.bulkAddDevice = async(req, res) => {
         response.push(newDevice);
       }
       res.status(200).json(response);
+}
+
+
+exports.generateLiabilityForm = async(req, res) => {
+// Load the docx file as binary content
+const condition = req.body.deviceType == "laptop" && req.body.type == "single"; //todo should be changed to req.body.deviceType
+const content = fs.readFileSync(
+    path.resolve(__dirname, condition ? `../data/liability form.docx` : `../data/liability form(1).docx`),
+    "binary"
+);
+
+const zip = new PizZip(content);
+
+const doc = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+});
+
+// Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+if(condition) {
+    doc.render({
+        brand: req.body.brand,
+        model: req.body.model,
+        serialNumber: req.body.serialNumber,
+        assetTagNumber: req.body.assetTagNumber,
+        fullName: req.body.fullName,
+        companyId: "",
+        department: req.body.department,
+    });
+} else {
+    doc.render({
+        deviceType: req.body.deviceType,
+        reason: req.body.reason,
+        fullName: req.body.fullName,
+        devices: req.body.devices,
+        department: req.body.department,
+    });
+}
+
+const buf = doc.getZip().generate({
+    type: "nodebuffer",
+    compression: "DEFLATE",
+});
+
+fs.writeFileSync(path.resolve(__dirname, "../data/liability document.docx"), buf);
+const file = path.resolve(__dirname, "../data/liability document.docx");
+    //No need for special headers
+    // console.log("liability downloader is working!");
+    // res.download(file); 
+    res.status(200).json(true);
+}
+
+exports.downloadLiabilityDoc = async(req, res) => {
+    const file = path.resolve(__dirname, `../data/liability document.docx`);
+    //No need for special headers
+    res.download(file); 
 }
 
 exports.downloadBulkTemplate = async(req, res) => {

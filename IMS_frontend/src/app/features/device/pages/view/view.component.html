@@ -54,7 +54,7 @@
                 <th scope="col" class="py-3 px-4">
                   Accessories
               </th>
-                  <th scope="col" class="py-3 px-4">
+                  <th *ngIf="!role.includes('back office manager')" scope="col" class="py-3 px-4">
                       Action
                   </th>
               </tr>
