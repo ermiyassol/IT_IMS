@@ -27,7 +27,7 @@
                 <th scope="col" class="py-3 px-1">
                     PO
                 </th>
-                <th scope="col" class="py-3 px-4">
+                <th scope="col" class="py-3 px-4" >
                     Device Type
                 </th>
                   <th scope="col" class="py-3 px-4">
@@ -54,6 +54,9 @@
                 <th scope="col" class="py-3 px-4">
                   Accessories
               </th>
+              <th scope="col" class="py-3 px-4" (click)="sort()">
+                Updated At <span nz-icon nzType="up" nzTheme="outline" *ngIf="sortTitle != 'descend'"></span> <span nz-icon nzType="down" nzTheme="outline" *ngIf="sortTitle != 'ascend'"></span>
+            </th>
                   <th *ngIf="!role.includes('back office manager')" scope="col" class="py-3 px-4">
                       Action
                   </th>
@@ -92,6 +95,9 @@
                 <td class="py-4 px-4">
                   <nz-tag [nzChecked]="true" *ngFor="let acc of device.accessory.split('|')">{{ acc | capitalize }}</nz-tag>                  
               </td>
+              <td class="py-4 px-4">
+                {{ device.updatedAt }}
+            </td>
                   <td class="py-4 px-4">
                     <button nz-button nz-tooltip nzTooltipTitle="View Detail" class="bg-green-600 text-white" nzSize="small"><span nz-icon nzType="eye" (click)="viewDetail(device.deviceId!)"></span></button>
                   </td>

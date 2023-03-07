@@ -182,7 +182,8 @@ DeviceResponseFormatter(employees: Employee[], devices: Device[]): any[] {
         company: empData ? empData.company : "",
         accessory: empData ? empData.accessory : "",
         city: empData ? empData.city : "",
-        checked: false
+        checked: false,
+        updatedAt: new Date(device.updatedAt!).toLocaleString()
     }
   })
   return data.reverse();

@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
   })
 
 export class API {
-    // private DOMAIN = "http://10.3.74.173:8080/api" 
-    private DOMAIN = "http://localhost:8000/api" 
+    private DOMAIN = "http://10.3.74.173:8000/api" 
+    // private DOMAIN = "http://localhost:8000/api" 
     private DEVICE = "/device"
     private EMPLOYEE = "/employee"
     private HISTORY = "/history"

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { RecordService } from './record.service';
+import { differenceInCalendarDays, setHours } from 'date-fns';
+
+import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'app-record',
@@ -15,6 +18,7 @@ export class RecordComponent implements OnInit {
   accessories: any[] = [];
   searchKey: string = "";
   username: string = "";
+  timeDefaultValue = setHours(new Date(), 0);
 
   // displayModal(id: string) { 
   //   this.updateId = id; 
@@ -34,6 +38,10 @@ export class RecordComponent implements OnInit {
   //     // this.updatedAccount = null;
   //   })
   // }
+
+  disabledDate = (current: Date): boolean =>
+  // Can not select days before today and today
+  differenceInCalendarDays(current, new Date()) > 0;
 
   submitForm(): void {
     this.formSubmitted = true;

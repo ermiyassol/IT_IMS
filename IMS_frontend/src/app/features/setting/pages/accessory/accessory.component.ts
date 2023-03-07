@@ -19,14 +19,34 @@ export class AccessoryComponent implements OnInit {
   accessories: any[] = [];
 
   updateContent(data: any) {
-    this.settingService.updateAccessory(data).then(() => {
-      this.accessories = this.settingService.getAccessory();
-    })
+    const index = this.accessories.findIndex(acc => acc.id == data.id);
+    if(data.return < 0 ) {data.return = 0; this.accessories[index] = data; this.message.display("error", "quantity less than 0 is not acceptable!"); }
+    else if(data.new < 0 ) {data.new = 0; this.accessories[index] = data; this.message.display("error", "quantity less than 0 is not acceptable!"); }
+    else {
+      this.settingService.updateAccessory(data).then(() => {
+        this.accessories = this.settingService.getAccessory();
+      })
+    }
+  }
+
+  formValidator() {
+    if(this.mainForm.value.quantity < 0) { 
+      this.mainForm.patchValue({quantity: 0});
+      this.message.display("error", "quantity less than 0 is not acceptable!");
+      return false; 
+    }
+    const index = this.accessories.findIndex(acc => acc.name == this.mainForm.value.name);
+    if(index >= 0) { 
+      this.mainForm.patchValue({name: ""});
+      this.message.display("error", "'" + this.accessories[index].name + "' is already exist!");
+      return false;
+     }
+    return true;
   }
 
   submitForm(): void {
     this.formSubmitted = true;
-    if (this.mainForm.valid) {
+    if (this.mainForm.valid && this.formValidator()) {
       this.settingService.addAccessory(this.mainForm.value).then(response => {
         this.message.display("success", "New accessory added successfully")
         this.formSubmitted = false;

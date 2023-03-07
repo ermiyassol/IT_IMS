@@ -21,6 +21,8 @@ export class ViewComponent implements OnInit {
   brands: any[] = [];
   selectedDevices: any[] = [];
   role = "";
+  sortTitle = "";
+  interval: any;
 
   issueDevice() {
     this.deviceService.setSelection(this.selectedDevices);
@@ -65,6 +67,28 @@ export class ViewComponent implements OnInit {
     return this.brands.filter(brand => brand.id == id).map(brand => brand.brandName).join("");
   }
 
+  sort() {
+    if(this.sortTitle == "") {
+      this.sortTitle = "ascend";
+    } else if(this.sortTitle == "ascend") {
+      this.sortTitle = "descend";
+    } else {
+      this.sortTitle = "";
+    }
+
+    if(this.sortTitle != "") {
+      this.devices.sort(( a, b ) => {
+        if ( a.updatedAt < b.updatedAt ){
+          return this.sortTitle == "ascend" ? -1 : 1;
+        }
+        if ( a.updatedAt > b.updatedAt ){
+          return this.sortTitle == "ascend" ? 1 : -1;
+        }
+        return 0;
+      })
+    } else {}
+  }
+
   constructor(private STORE: StoreService, private route: ActivatedRoute, private routes: Router, private deviceService: DeviceService, private message: MessageService) { }
 
   ngOnInit() {
@@ -75,9 +99,22 @@ export class ViewComponent implements OnInit {
       this.isLoading = false;
     })
 
+    this.interval = setInterval(() => {
+      this.deviceService.fetchAll().then((response: any[]) => {
+        this.devices = response;
+        this.isLoading = false;
+        console.log("Device Response");
+      })
+    }, 10000);
+
+
     this.deviceService.getTableValidators().then((responseData: any) => {
       this.brands = responseData.brands;
       this.purchaseOrders = responseData.purchaseOrders
     })
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval);
   }
 }

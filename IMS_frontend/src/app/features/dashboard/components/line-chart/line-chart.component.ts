@@ -51,6 +51,6 @@ export class LineChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("Line Chart Data - ", this.value);
   }
-
 }

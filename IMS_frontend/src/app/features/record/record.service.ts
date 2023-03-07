@@ -12,6 +12,7 @@ constructor(private recordApi: RecordApiService, private STORE: StoreService) { 
 addRecord = (data: any) => {
   return new Promise((resolve, reject) => {
     const actionBy = this.STORE.getUsername();
+    data.date = new Date(data.date).toDateString();
     const newRecord = {date: data.date, description: data.description, accessory: data.accessory ? data.accessory : "", type: data.type ? data.type : "", actionBy: actionBy}; // should be integrated with the authentication
     this.recordApi.addRecord(newRecord).then(response => {
       this.STORE.addRecord(response);

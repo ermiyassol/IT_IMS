@@ -18,6 +18,7 @@ getSession() {
 
 loadData() {
   return new Promise((resolve, reject) => {
+
     this.Settings.fetchSettingData('city').then(() => {if(this.loadedDataCount == this.maxDataCountLimit) { resolve(true) } else { this.loadedDataCount++; console.log(this.loadedDataCount); }})
     this.Settings.fetchSettingData('device type').then(() => {if(this.loadedDataCount == this.maxDataCountLimit) { resolve(true) } else { this.loadedDataCount++; console.log(this.loadedDataCount); }})
     // this.Settings.fetchSettingData('role').then(() => {if(this.loadedDataCount == this.maxDataCountLimit) { resolve(true) } else { this.loadedDataCount++ }})
