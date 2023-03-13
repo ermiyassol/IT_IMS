@@ -1,9 +1,48 @@
 const db = require("../config/db.config");
+const path = require('path');
+const multer = require('multer');
 const { issueAccessory, returnAccessory } = require("./accessory.controller");
+const { throws } = require("assert");
 
 const Employee = db.employee;
 
+// const PATH = '../data/liability';
+// let storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, PATH);
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + '-' + Date.now())
+//   }
+// });
+// let upload = multer({
+//   storage: storage
+// });
+exports.downloadSignedLiabilityDoc = async(req, res) => {
+    const file = path.resolve(__dirname, '../data/liability_doc/emp-' + req.params.id + '-liability.pdf');
+    // //No need for special headers
+    console.log("File - ", file);
+    if(file) {
+        res.download(file); 
+    } else {
+        throws("No file found!");
+    }
+}
 
+exports.uploadLiabilityForm = async(req, res) => {
+    if (!req.file) {
+      console.log("No file is available!");
+      return res.send({
+        success: false
+      });
+    } else {
+      console.log('File is available!');
+      return res.send({
+        success: true
+      })
+    }
+  };
+  
 
 exports.countEmployee = async(req, res) => {
     const count = await Employee.count();

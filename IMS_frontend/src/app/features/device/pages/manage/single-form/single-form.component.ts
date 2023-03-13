@@ -7,7 +7,10 @@ import { History } from '../../../model/history.model';
 import { DeviceService } from '../../../service/device.service';
 import { StoreService } from '../../../../../shared/store/store.service';
 import { compileNgModule } from '@angular/compiler';
+import { FileUploader } from 'ng2-file-upload';
+import { API } from 'src/app/shared/services/api.store';
 
+const URL = 'http://localhost:8080/api/upload';
 @Component({
   selector: 'app-single-form',
   templateUrl: './single-form.component.html',
@@ -37,6 +40,27 @@ export class SingleFormComponent implements OnInit {
   purchaseOrders: any[] = [];
   selectedDeviceDetail: any[] = [];
   issueFormVisibility = true;
+  uploader: FileUploader = new FileUploader({
+    url: this.api.uploadLiabilityForm +"/1",
+    // itemAlias: this.employeeDetail[0].id + ".pdf",
+    itemAlias: "file",
+    additionalParameter: { id: "it works"}
+  });
+  issueFormEdit = false;
+
+  downloadSignedLiabilityForm() {
+    const name = this.employeeDetail[0].fullName;
+    const id = this.employeeDetail[0].id;
+    this.deviceService.downloadSignedLiabilityDoc(name, id).then(() => {}, error => this.message.display("error", error));
+  }
+
+  editIssueFields() {
+    this.issueFormEdit = true;
+    console.log("Updated Form - ", this.issueForm.value);
+  }
+
+  updateIssueField() {
+  }
 
   accessoryChanged(accessories: any[]) {
     let accessoryDetail: any[] = [];
@@ -218,7 +242,7 @@ export class SingleFormComponent implements OnInit {
     this.routes.navigate(['main/device/view'],);
   }
 
-  constructor(private route: ActivatedRoute, private routes: Router, private message: MessageService, private deviceService: DeviceService, private fb: UntypedFormBuilder, private storeService: StoreService) {}
+  constructor(private api: API, private route: ActivatedRoute, private routes: Router, private message: MessageService, private deviceService: DeviceService, private fb: UntypedFormBuilder, private storeService: StoreService) {}
 
   displayPO(id: string) {
     return this.purchaseOrders.filter(po => po.id == id).map(po => po.purchaseOrder).join("");
@@ -257,10 +281,15 @@ export class SingleFormComponent implements OnInit {
       if(this.deviceDetail.length == 0) {
         this.routes.navigate(["../../"], {relativeTo: this.route});
       } else {
-        // fetchModel function
+        // console.log(this.deviceDetail[0].id);
         this.deviceTypeChanged(this.deviceDetail[0].deviceType)
         this.brandChanged(this.deviceDetail[0].brand);
         this.employeeDetail = this.deviceService.findEmployeeByDevice(this.updatedId);
+        this.uploader = new FileUploader({
+          url: this.api.uploadLiabilityForm + "/" + this.employeeDetail[0].id,
+          // itemAlias: this.employeeDetail[0].id + ".pdf",
+          itemAlias: "file",
+        });
       }
     }
 
@@ -298,6 +327,16 @@ export class SingleFormComponent implements OnInit {
       const index = this.selectedDeviceDetail.findIndex(device => device.id == deviceId);
       this.selectedDeviceDetail[index].checked = true;
     })
+
+    
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
+    this.uploader.onCompleteItem = (item: any, status: any) => {
+      console.log('Uploaded File Details:', item);
+      this.message.display("success", 'File successfully uploaded!');
+    };
+
   }
 
   ngOnDestroy(): void {

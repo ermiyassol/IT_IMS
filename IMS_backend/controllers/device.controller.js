@@ -43,17 +43,17 @@ const doc = new Docxtemplater(zip, {
 // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
 if(condition) {
     doc.render({
-        brand: req.body.brand,
-        model: req.body.model,
-        serialNumber: req.body.serialNumber,
-        assetTagNumber: req.body.assetTagNumber,
+        brand: req.body.brand.toUpperCase(),
+        model: req.body.model.toUpperCase(),
+        serialNumber: req.body.serialNumber.toUpperCase(),
+        assetTagNumber: req.body.assetTagNumber.toUpperCase(),
         fullName: req.body.fullName,
         companyId: "",
         department: req.body.department,
     });
 } else {
     doc.render({
-        deviceType: req.body.deviceType,
+        deviceType: req.body.deviceType.toUpperCase(),
         reason: req.body.reason,
         fullName: req.body.fullName,
         devices: req.body.devices,

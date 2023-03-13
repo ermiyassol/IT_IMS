@@ -151,7 +151,7 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="serial-number">
               SERIAL NUMBER
             </label>
-            <div *ngIf="formUse == 'detail' && !editFields" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{mainForm.value.serialNumber | uppercase}}</div>
+            <div *ngIf="formUse == 'detail' && !editFields" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{mainForm.value.serialNumber | capitalize}}</div>
 
             <input *ngIf="formUse != 'detail' || editFields" [ngClass]="{'border-red-600': !mainForm.controls['serialNumber'].valid && formSubmitted}"  formControlName="serialNumber" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="serial-number" type="text" placeholder="PF3S1234">
             <p *ngIf="!mainForm.controls['serialNumber'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
@@ -164,7 +164,7 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="asset-tag-number">
               ASSET TAG NUMBER
             </label>
-            <div *ngIf="formUse == 'detail' && !editFields" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{mainForm.value.assetTagNumber | uppercase}}</div>
+            <div *ngIf="formUse == 'detail' && !editFields" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{mainForm.value.assetTagNumber | capitalize}}</div>
 
             <input *ngIf="formUse != 'detail' || editFields" [ngClass]="{'border-red-600': !mainForm.controls['assetTagNumber'].valid && formSubmitted}" formControlName="assetTagNumber" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="asset-tag-number" type="text" placeholder="SE010000">
             <p *ngIf="!mainForm.controls['assetTagNumber'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
@@ -182,7 +182,7 @@
             </label>
             <div class="relative">
               <div class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{mainForm.value.status | capitalize}}</div>
-  
+
               <!-- <select [ngClass]="{'border-red-600': !mainForm.controls['status'].valid && formSubmitted}" formControlName="status" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">
                 <option label="--Select Status--" value=""></option>
                 <option *ngFor="let sVal of status" [label]="sVal" [value]="sVal"></option>
@@ -207,15 +207,59 @@
       <!-- <button nz-button class="w-2/12 h-10 bg-green-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Device</button> -->
     </form>
   </div>
-  
+
   <!-- device information -->
   <div *ngIf="mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0 && issueFormVisibility">
     <nz-divider nzText="Device Current Holder Details"></nz-divider>
   <div id="main" class="main-content w-full bg-gray-100 p-5">
     <form class="w-full" nz-form [formGroup]="issueForm" (ngSubmit)="submitForm()">
       <div class="flex flex-wrap -mx-3 mb-6">
-        <div class="w-full mb-8">
+
+        <div 
+        class="flex justify-between md:w-1/2 px-3 mb-6 md:mb-0"
+        *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'"
+        >
+          <div class="mb-3 w-full">
+            <label
+              for="formFile"
+              class="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+              >Liability Form Uploading</label
+            >
+            <div class="flex justify-start">
+              <input
+                class="relative m-0 block w-1/2 min-w-0 flex-auto rounded border border-solid border-neutral-300 dark:border-neutral-600 bg-clip-padding py-[0.32rem] px-3 text-base font-normal text-neutral-700 dark:text-neutral-200 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 dark:file:bg-neutral-700 file:px-3 file:py-[0.32rem] file:text-neutral-700 dark:file:text-neutral-100 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none"
+                type="file"
+                id="formFile"
+                (change)="uploader.uploadAll()"
+                ng2FileSelect
+                [uploader]="uploader" />
+              <a class="self-end ml-2 text-red-600 font-bold text-l" (click)="downloadSignedLiabilityForm()" >Download Liability Form</a>
+            </div>
+          </div>
+          <!-- <button nz-button *ngIf="mainForm.value.status == 'issued' && formUse == 'detail'" class="bg-transparent hover:bg-green-500 text-green-700  font-semibold hover:text-white py-1 px-8 border border-green-500 hover:border-transparent rounded" (click)="editDetails()">
+            Edit Details
+          </button> -->
+        </div>
+
+        <!-- <nz-upload
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      [nzHeaders]="{ authorization: 'authorization-text' }"
+      class="w-full md:w-1/4 px-3 mb-6 md:mb-0"
+      ng2FileSelect
+      [uploader]="uploader"
+    >
+      <button nz-button>
+        <span nz-icon nzType="upload"></span>
+        Click to Upload
+      </button>
+    </nz-upload> -->
+
+        <div class="flex justify-between w-full mb-8">
           <app-accessory *ngIf="selectedDeviceDetail.length <= 0" [showCheckbox]="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" [data]="issueForm.value.accessory" (accessoryEvent)="accessoryChanged($event)"></app-accessory>
+          <button nz-button *ngIf="false" class="bg-transparent hover:bg-green-500 text-green-700  font-semibold hover:text-white py-1 px-8 border border-green-500 hover:border-transparent mr-10 rounded" type="button" (click)="editIssueFields()">
+            <!-- *ngIf="mainForm.value.status == 'issued' && formUse == 'detail'" -->
+            Edit Details
+          </button>
         </div>
         <nz-form-item class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
           <nz-form-control >
@@ -223,7 +267,7 @@
               ISSUED DATE <span>(MM/DD/YYYY)</span>
             </label>
             <div class="relative">
-              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.date | uppercase}}</div>
+              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.date | capitalize}}</div>
 
               <input *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" [ngClass]="{'border-red-600': !issueForm.controls['date'].valid && formSubmitted}" formControlName="date" datepicker type="text" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="issuing-date" placeholder="Select date">
             </div>
@@ -237,7 +281,7 @@
               ISSUING REMARK
             </label>
             <div class="relative">
-              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.issuingRemark | uppercase}}</div>
+              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.issuingRemark | capitalize}}</div>
 
               <select *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="issuingRemark" [ngClass]="{'border-red-600': !issueForm.controls['issuingRemark'].valid && formSubmitted}" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="issuing-remark" (ngModelChange)="brandChanged()">
                 <option label="--Select Issuing Remark--" value=""></option>
@@ -258,7 +302,7 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="id-no">
               ID. NO.
             </label>
-            <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.companyId ? issueForm.value.companyId : "No ID Record" | uppercase}}</div>
+            <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.companyId ? issueForm.value.companyId : "No ID Record" | capitalize}}</div>
 
             <input *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="companyId" [ngClass]="{'border-red-600': !issueForm.controls['companyId'].valid && formSubmitted}" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="id-no" type="text" placeholder="sec012 - (optional)">
             <p *ngIf="!issueForm.controls['companyId'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
@@ -270,7 +314,7 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="full-name">
               FULL NAME
             </label>
-            <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.fullName | uppercase}}</div>
+            <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.fullName | capitalize}}</div>
 
             <input *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="fullName" [ngClass]="{'border-red-600': !issueForm.controls['fullName'].valid && formSubmitted}" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full-name" type="text" placeholder="Firstname + Lastname">
             <p *ngIf="!issueForm.controls['fullName'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
@@ -282,9 +326,9 @@
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="designation">
               DESIGNATION
             </label>
-            <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.designation | uppercase}}</div>
+            <div *ngIf="!issueFormEdit && formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.designation | capitalize}}</div>
 
-            <input *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="designation" [ngClass]="{'border-red-600': !issueForm.controls['designation'].valid && formSubmitted}" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="designation" type="text" placeholder="Current Position">
+            <input *ngIf="issueFormEdit || formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="designation" [ngClass]="{'border-red-600': !issueForm.controls['designation'].valid && formSubmitted}" class="appearance-none block w-full bg-gray-200 text-gray-700 border hover:border-green-600 focus:border-green-6000 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="designation" type="text" placeholder="Current Position">
             <p *ngIf="!issueForm.controls['designation'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p>
           </nz-form-control>
         </nz-form-item>
@@ -292,7 +336,8 @@
       <div class="flex flex-wrap -mx-3 mb-2">
         <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
           <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="empStatus">EMPLOYMENT STATUS</label>
-          <nz-radio-group [ngClass]="{'border-red-600': !issueForm.controls['empStatus'].valid && formSubmitted}" class="space-x-3" formControlName="empStatus" (ngModelChange)="empStatusChanged()" id="empStatus">
+          <h3 *ngIf="!issueFormEdit && formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'">{{issueForm.value.empStatus | capitalize}}</h3>
+          <nz-radio-group *ngIf="issueFormEdit || formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" [ngClass]="{'border-red-600': !issueForm.controls['empStatus'].valid && formSubmitted}" class="space-x-3" formControlName="empStatus" (ngModelChange)="empStatusChanged()" id="empStatus">
             <label nz-radio nzValue="Staff">Staff</label>
             <label nz-radio nzValue="Contractor">Contractor</label>
           </nz-radio-group>
@@ -305,9 +350,9 @@
               COMPANY
             </label>
             <div class="relative">
-              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.company | uppercase}}</div>
+              <div *ngIf="!issueFormEdit && formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.company | capitalize}}</div>
 
-              <select *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="company" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="model">
+              <select *ngIf="issueFormEdit || formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="company" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="model">
                 <option label="--Select Company (Optional)--" value=""></option>
                 <option *ngFor="let company of companies" [label]="company" [value]="company"></option>
               </select>
@@ -325,9 +370,9 @@
               CITY
             </label>
             <div class="relative">
-              <div *ngIf="formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.city | uppercase}}</div>
+              <div *ngIf="!issueFormEdit && formUse == 'detail' && !editSubFields && mainForm.value.status == 'issued'" class="cursor-not-allowed block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="status">{{issueForm.value.city | capitalize}}</div>
 
-              <select *ngIf="formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="city" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="model">
+              <select *ngIf="issueFormEdit || formUse == 'detail' && editSubFields && mainForm.value.status == 'issued' || selectedDeviceDetail.length > 0" formControlName="city" class="block appearance-none w-full bg-gray-200 border hover:border-green-600 focus:border-green-600 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="model">
                 <option label="--Select City (Optional)--" value=""></option>
                 <option *ngFor="let city of cities" [label]="city" [value]="city"></option>
               </select>
@@ -338,6 +383,7 @@
             <!-- <p *ngIf="!issueForm.controls['city'].valid && formSubmitted" class="text-red-500 text-xs italic">Please fill out this field.</p> -->
           </nz-form-control>
         </nz-form-item>
+        <button *ngIf="issueFormEdit == true" class="w-full h-8 mt-5 bg-green-600  hover:bg-green-600 text-white font-bold py-1 px-4 rounded" >Update Field</button>
       </div>
       <!-- <button nz-button class="w-2/12 h-10 bg-green-600 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Add Device</button> -->
     </form>

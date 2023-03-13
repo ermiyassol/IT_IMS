@@ -15,6 +15,24 @@ constructor(private api: API, private http: HttpClient) {}
 
 // todo check if the server is up
 // DEVICE
+downloadSignedLiabilityDoc = (employeeName: string = "", id: any) => {
+  return new Promise((resolve, reject) => {
+    console.log("Download liability doc method invoked");
+    this.http
+  .get(this.api.downloadSignedLiabilityDoc + id, { responseType: "blob" }) //set response Type properly (it is not part of headers)
+  .toPromise()
+  .then((blob: any) => {
+      saveAs(blob, employeeName + " Signed Liability Form.pdf"); 
+      resolve(true);
+  })
+  .catch(err => {
+    reject("download error");
+    console.error("download error = ", err);
+  })
+
+  });
+};
+
 downloadLiabilityDoc = (docName: string = "") => {
   return new Promise((resolve, reject) => {
     console.log("Download liability doc method invoked");

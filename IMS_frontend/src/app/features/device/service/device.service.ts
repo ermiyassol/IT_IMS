@@ -16,6 +16,8 @@ export class DeviceService {
 
 constructor(private API: DeviceApiService, private STORE: StoreService) { }
 
+
+
 getAccessory() { return this.STORE.getAllAccessory(); }
 
 setSelection(data: number[]) {
@@ -339,6 +341,12 @@ findEmployeeByDevice(deviceId: string) {
 downloadBulkTemplate() {
   return new Promise((resolve, reject) => {
     this.API.downloadBulkTemplate().then(() => resolve(true), errorMessage => reject(errorMessage))
+  })
+}
+
+downloadSignedLiabilityDoc(name: string, id: any) {
+  return new Promise((resolve, reject) => {
+    this.API.downloadSignedLiabilityDoc(name, id).then(() => resolve(true), errorMessage => reject(errorMessage))
   })
 }
 

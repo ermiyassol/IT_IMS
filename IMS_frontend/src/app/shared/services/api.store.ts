@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
   })
 
 export class API {
-    private DOMAIN = "http://10.3.74.173:8000/api" 
-    // private DOMAIN = "http://localhost:8000/api" 
+    // private DOMAIN = "http://10.3.74.173:8000/api" 
+    private DOMAIN = "http://localhost:8000/api" 
     private DEVICE = "/device"
     private EMPLOYEE = "/employee"
     private HISTORY = "/history"
@@ -93,7 +93,8 @@ export class API {
     findEmployee = `${this.DOMAIN}${this.EMPLOYEE}/findEmployee/`;
     updateEmployee = `${this.DOMAIN}${this.EMPLOYEE}/updateEmployee/`;
     deleteEmployee = `${this.DOMAIN}${this.EMPLOYEE}/deleteEmployee/`;
-    
+    uploadLiabilityForm = `${this.DOMAIN}${this.EMPLOYEE}/uploadLiabilityForm`;
+    downloadSignedLiabilityDoc = `${this.DOMAIN}${this.EMPLOYEE}/downloadLiabilityDoc/`;
     // HISTORY
     countHistory = `${this.DOMAIN}${this.HISTORY}/countHistory`;
     addHistory = `${this.DOMAIN}${this.HISTORY}/addHistory`;

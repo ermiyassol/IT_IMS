@@ -11,7 +11,7 @@
     <li  nz-submenu nzTitle="Device" nzIcon="desktop">
       <ul class="sub-menu">
         <li nz-menu-item routerLink="device/view" routerLinkActive="ant-menu-item-selected">View</li>
-        <li nz-menu-item routerLink="device/add" routerLinkActive="ant-menu-item-selected" *ngIf="role.includes('admin') || role.includes('inventory manager') || role.includes('support specialist')">Add New</li>
+        <li nz-menu-item routerLink="device/add" routerLinkActive="ant-menu-item-selected" *ngIf="role.includes('admin') || role.includes('inventory manager')">Add New</li>
         <!-- <li nz-menu-item>Alex</li> -->
       </ul>
     </li>

@@ -22,6 +22,7 @@
     "@swimlane/ngx-charts": "^20.1.2",
     "file-saver": "^2.0.5",
     "ng-zorro-antd": "^14.2.0",
+    "ng2-file-upload": "^3.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "xlsx": "^0.18.5",
