@@ -8,7 +8,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MainModule } from './features/main/main.module';
@@ -18,6 +18,8 @@ import { SettingModule } from './features/setting/setting.module';
 import { DashboardModule } from './features/dashboard/dashboard.module';
 import { RecordComponent } from './features/record/record.component';
 import { RecordSearchPipe } from './features/record/record-search.pipe';
+import { InterceptorService } from './shared/services/interceptor.service';
+// import {HTTP_INTERCEPTORS } from '@angular/common/http';
 
 registerLocaleData(en);
 
@@ -39,7 +41,12 @@ registerLocaleData(en);
     
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US }
+    { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+     },
   ],
   bootstrap: [AppComponent]
 })

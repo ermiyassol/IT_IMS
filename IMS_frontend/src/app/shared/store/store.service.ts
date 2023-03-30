@@ -24,6 +24,8 @@ private accessory: any[] = [];
 private record: any[] = [];
 private session: any = null;
 
+getAuthToken() { return this.session.token; }
+
 getBrandName(id: string) {
   const index = this.deviceBrands.findIndex(brand => brand.id == id);
   return index >= 0 ? this.deviceBrands[index].brandName : "";

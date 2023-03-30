@@ -14,6 +14,7 @@ login = (data: any) => {
     console.log("Auth api called");
     this.http.post<{status: number, data: any}>(this.api.login, data).subscribe(response => {
       resolve(response.data);
+      console.log("Token - ", response.data);
     }, error => {
       reject(error.error.message);
     });

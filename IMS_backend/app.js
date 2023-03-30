@@ -1,4 +1,5 @@
 const express = require('express');
+const { checkToken } = require('./controllers/auth..controller');
 // const configs = require("./config/config");
 const corsHandler = require('./middleware/cors');
 const router = require('./routes/index.routes');
@@ -22,6 +23,18 @@ app.use(corsHandler);
 //     );
 //     next();
 //   });
+app.use((req, res, next) => {
+    console.log(req.url);
+    console.log("Request - Header - ", req.headers.authorization);
+    console.log(checkToken(req.headers.authorization));
+    if(req.url == "/api/auth/login" || checkToken(req.headers.authorization)) {
+        next();
+    } else {
+        res.status(401).json(false);
+        // throw(false);
+    }
+})
+
 app.use("/api/auth", router.auth)
 app.use("/api/device", router.device)
 app.use("/api/device", router.deviceType)
