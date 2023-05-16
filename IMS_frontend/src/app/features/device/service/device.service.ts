@@ -13,10 +13,36 @@ import { Subject } from 'rxjs';
 export class DeviceService {
   selectedDeviceData: Device[] = [];
   multiDeviceNotifier = new Subject<string>();
+  tableData: any[] = [];
 
 constructor(private API: DeviceApiService, private STORE: StoreService) { }
 
+search(key: string) {
+  console.log("Search Key - ", key);
+  const result = this.tableData.filter((device: any) => {
+    if(device.poId.includes(key) ||
+    device.deviceType.includes(key) ||
+    device.brand.includes(key) ||
+    device.serialNumber.includes(key) ||
+    device.assetTagNumber.includes(key) ||
+    device.model.includes(key) ||
+    device.status.includes(key) ||
+    device.fullName.includes(key) ||
+    device.role.includes(key) ||
+    device.empStatus.includes(key) ||
+    device.company.includes(key) ||
+    device.city.includes(key)) {
+      return device;
+    } else { return; }
+  });
 
+  if(result.length > 20) {
+    result.splice(39, result.length - 40);
+    return result;
+  }
+
+  return result;
+}
 
 getAccessory() { return this.STORE.getAllAccessory(); }
 
@@ -41,7 +67,7 @@ issueMultipleDevice(devices: Device[], empData: any) {
         device.status = "issued";
         this.issueDevice(device.id!, device, empData, "Multiple").then(() => {
           this.multiDeviceNotifier.next(device.id!)
-          if(index == data.length - 1) { 
+          if(index == data.length - 1) {
             const devicesDetail = devices.map(device => { return { serialNumber: device.serialNumber, assetTagNumber: device.assetTagNumber }})
             let deviceType: string[] = [];
             devices.forEach(device => { if(!deviceType.includes(device.deviceType)) {
@@ -58,7 +84,7 @@ issueMultipleDevice(devices: Device[], empData: any) {
           }
             this.API.generateLiabilityForm(docData, empData.fullName).then(() => {}, error => reject(error));
 
-            resolve(true); 
+            resolve(true);
           }
         })
       }, 1000);
@@ -93,7 +119,7 @@ validateBulkData(data: any[]) {
     return;
   })
   return errorFields.filter(field => { if(field) { return field; } return;});
-} 
+}
 
 deviceBulkUpload(data: any[]) {
   return new Promise((resolve, reject) => {
@@ -149,16 +175,17 @@ addDevice = (formData: any) => {
     }, error => {
       reject(error);
     })
-    
+
   });
 }
 
 fetchAll() {
-  return new Promise<any[]>((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     this.fetchAllEmployee().then(empReponse => {
       this.fetchAllDevice().then(devResponse => {
         const data: any[] = this.DeviceResponseFormatter(empReponse, devResponse);
-        resolve(data);
+        this.tableData = data;
+        resolve(true);
       })
     })
   })
@@ -276,7 +303,7 @@ issueDevice(deviceId: string, devData: Device, empData: any, docType: any = "") 
           resolve("New device issued for " + empData.fullName + ".");
         }, error => reject(error))
       }, error => reject(error))
-      
+
     }, error => {
       reject(error);
     })

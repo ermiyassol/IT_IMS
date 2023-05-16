@@ -69,7 +69,7 @@ export class SingleFormComponent implements OnInit {
         accessoryDetail.push({name: item.value, type: item.type});
       }
     })
-    
+
     this.issueForm.patchValue({accessory: accessoryDetail})
   }
 
@@ -186,10 +186,10 @@ export class SingleFormComponent implements OnInit {
     const status = this.mainForm.value.status;
     if(status == "issued") {
       return this.deviceService.issueDevice(this.updatedId, this.mainForm.value, this.issueForm.value);
-    } 
+    }
     else if (status == "returned" && this.previousStatus == "issued" || status == "damaged" && this.previousStatus == "issued") {
       return this.deviceService.returnDevice(this.stateForm.value, this.mainForm.value, this.updatedId, status)
-    } 
+    }
     else {
       return this.deviceService.changeStatus(this.stateForm.value, this.mainForm.value, this.updatedId).then((successMessage: any) => {
         this.deviceHistory = this.deviceService.getHistory();
@@ -229,7 +229,7 @@ export class SingleFormComponent implements OnInit {
 
   formValidation() {
     if(this.mainForm.valid) {
-      if(this.mainForm.value.status == "issued" && this.issueForm.valid) { return true; } 
+      if(this.mainForm.value.status == "issued" && this.issueForm.valid) { return true; }
       else if(this.mainForm.value.status == "damaged" && this.stateForm.valid) { return true; }
       else if(this.mainForm.value.status == "returned" && this.stateForm.valid) { return true; }
       else if(this.mainForm.value.status == "lost" && this.stateForm.valid) { return true; }
@@ -274,6 +274,7 @@ export class SingleFormComponent implements OnInit {
       this.isLoading = true;
       this.updatedId = id;
       this.deviceDetail = this.deviceService.findDevice(id);
+      console.log("detail page - ", this.deviceDetail);
       this.deviceService.findHistory(id).then((response: any) => {
         this.deviceHistory = response;
         this.isLoading = false;
@@ -285,11 +286,14 @@ export class SingleFormComponent implements OnInit {
         this.deviceTypeChanged(this.deviceDetail[0].deviceType)
         this.brandChanged(this.deviceDetail[0].brand);
         this.employeeDetail = this.deviceService.findEmployeeByDevice(this.updatedId);
-        this.uploader = new FileUploader({
-          url: this.api.uploadLiabilityForm + "/" + this.employeeDetail[0].id,
-          // itemAlias: this.employeeDetail[0].id + ".pdf",
-          itemAlias: "file",
-        });
+
+        if(this.employeeDetail.length) {
+          this.uploader = new FileUploader({
+            url: this.api.uploadLiabilityForm + "/" + this.employeeDetail[0].id,
+            // itemAlias: this.employeeDetail[0].id + ".pdf",
+            itemAlias: "file",
+          });
+        }
       }
     }
 
@@ -328,7 +332,7 @@ export class SingleFormComponent implements OnInit {
       this.selectedDeviceDetail[index].checked = true;
     })
 
-    
+
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     };

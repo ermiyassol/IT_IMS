@@ -24,6 +24,11 @@ export class ViewComponent implements OnInit {
   sortTitle = "";
   interval: any;
 
+  search() {
+    this.devices = this.deviceService.search(this.searchKey);
+    // console.log("Data - ", data);
+  }
+
   issueDevice() {
     this.deviceService.setSelection(this.selectedDevices);
     this.routes.navigate(['../issue/devices/confirm'], {relativeTo: this.route})
@@ -56,7 +61,8 @@ export class ViewComponent implements OnInit {
   }
 
   viewDetail(deviceId: string) {
-    this.routes.navigate([`./${deviceId}/detail`], {relativeTo: this.route})
+    this.routes.navigate([`./${deviceId}/detail`], {relativeTo: this.route});
+    console.log("Selected Device ID - ", deviceId);
   }
 
   displayPO(id: string) {
@@ -99,13 +105,13 @@ export class ViewComponent implements OnInit {
       this.isLoading = false;
     })
 
-    this.interval = setInterval(() => {
-      this.deviceService.fetchAll().then((response: any[]) => {
-        this.devices = response;
+    // this.interval = setInterval(() => {
+      this.deviceService.fetchAll().then((response: boolean) => {
+        // this.devices = response;
         this.isLoading = false;
         console.log("Device Response");
       })
-    }, 10000);
+    // }, 10000);
 
 
     this.deviceService.getTableValidators().then((responseData: any) => {

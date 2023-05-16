@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
   })
 
 export class API {
-    private DOMAIN = "http://10.3.74.173:8000/api" 
-    // private DOMAIN = "http://localhost:8000/api" 
+    // private DOMAIN = "http://10.3.74.173:8000/api"
+    private DOMAIN = "http://dptest0001:8000/api"
     private DEVICE = "/device"
     private EMPLOYEE = "/employee"
     private HISTORY = "/history"
@@ -61,7 +61,7 @@ export class API {
     addCompany = `${this.DOMAIN}${this.COMPANY}/addCompany`;
     fetchAllCompany = `${this.DOMAIN}${this.COMPANY}/fetchAllCompany`;
     deleteCompany = `${this.DOMAIN}${this.COMPANY}/deleteCompany/`;
-    
+
     // DEVICE
     bulkAddDevice = `${this.DOMAIN}${this.DEVICE}/bulkAddDevice`;
     downloadBulkTemplate = `${this.DOMAIN}${this.DEVICE}/downloadBulkTemplate`;
@@ -73,7 +73,7 @@ export class API {
     deleteDevice = `${this.DOMAIN}${this.DEVICE}/deleteDevice/`;
     generateLiabilityForm = `${this.DOMAIN}${this.DEVICE}/generateLiabilityForm/`;
     downloadLiabilityDoc = `${this.DOMAIN}${this.DEVICE}/downloadLiabilityDoc/`;
-    
+
     // ----------CITY----------------------------------------------------------------
     updateDeviceType = `${this.DOMAIN}${this.DEVICE}/updateDeviceType`;
     fetchAllDeviceType = `${this.DOMAIN}${this.DEVICE}/fetchAllDeviceType`;
@@ -85,7 +85,7 @@ export class API {
     addDeviceModel = `${this.DOMAIN}${this.DEVICE}/addDeviceModel`;
     fetchAllDeviceModel = `${this.DOMAIN}${this.DEVICE}/fetchAllDeviceModel`;
     deleteDeviceModel = `${this.DOMAIN}${this.DEVICE}/deleteDeviceModel/`;
-    
+
     //EMPLOYEE
     countEmployee = `${this.DOMAIN}${this.EMPLOYEE}/countEmployee`;
     addEmployee = `${this.DOMAIN}${this.EMPLOYEE}/addEmployee`;

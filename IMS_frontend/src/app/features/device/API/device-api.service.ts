@@ -22,7 +22,7 @@ downloadSignedLiabilityDoc = (employeeName: string = "", id: any) => {
   .get(this.api.downloadSignedLiabilityDoc + id, { responseType: "blob" }) //set response Type properly (it is not part of headers)
   .toPromise()
   .then((blob: any) => {
-      saveAs(blob, employeeName + " Signed Liability Form.pdf"); 
+      saveAs(blob, employeeName + " Signed Liability Form.pdf");
       resolve(true);
   })
   .catch(err => {
@@ -40,7 +40,7 @@ downloadLiabilityDoc = (docName: string = "") => {
   .get(this.api.downloadLiabilityDoc, { responseType: "blob" }) //set response Type properly (it is not part of headers)
   .toPromise()
   .then((blob: any) => {
-      saveAs(blob, docName + " Liability Form.docx"); 
+      saveAs(blob, docName + " Liability Form.docx");
       resolve(true);
   })
   .catch(err => {
@@ -85,7 +85,7 @@ downloadBulkTemplate = () => {
   .get(this.api.downloadBulkTemplate, { responseType: "blob" }) //set response Type properly (it is not part of headers)
   .toPromise()
   .then((blob: any) => {
-      saveAs(blob, "IT_IMS_device_bulk_template.csv"); 
+      saveAs(blob, "IT_IMS_device_bulk_template.csv");
       resolve(true);
   })
   .catch(err => {
@@ -267,6 +267,7 @@ fetchAllHistory = () => {
 };
 
 findHistory = (id: string) => {
+  console.log("ID - - ", id)
   return new Promise<History[]>((resolve, reject) => {
     this.http.get<any>(this.api.findHistory + id).subscribe(response => {
       if(response.status) {
